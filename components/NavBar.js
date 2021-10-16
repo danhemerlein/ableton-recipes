@@ -4,6 +4,7 @@ import { UserContext } from '../lib/context';
 
 const NavBar = ({}) => {
   const { user, username } = useContext(UserContext);
+
   return (
     <nav className="navbar">
       <ul>
@@ -12,7 +13,6 @@ const NavBar = ({}) => {
         </li>
 
         {/* user is signed in and has a username */}
-
         {username && (
           <>
             <li>
@@ -27,7 +27,6 @@ const NavBar = ({}) => {
         )}
 
         {/* user is not signed in OR has not created a user name */}
-
         {!username && (
           <li>
             <Link href="enter">log in</Link>
