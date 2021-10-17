@@ -7,6 +7,13 @@ export async function getServerSideProps({ query }) {
   const { username } = query;
 
   const userDocRef = await getUserWithUsername(username);
+
+  if (!userDocRef) {
+    return {
+      notFound: true,
+    };
+  }
+
   const userDocSnap = await getDoc(userDocRef);
 
   // JSON serializable data
@@ -25,8 +32,6 @@ export async function getServerSideProps({ query }) {
 }
 
 const UserProfilePage = ({ user, posts }) => {
-  console.log(posts);
-
   return (
     <main>
       <UserProfile user={user} />
