@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import Loader from '../components/Loader';
+import Metatags from '../components/Metatags';
 import PostFeed from '../components/PostFeed';
 import { docToJSON, firestore } from '../lib/firebase';
 
@@ -68,6 +69,7 @@ export default function Home(props) {
 
   return (
     <main>
+      <Metatags title="fireship next" />
       <PostFeed posts={posts} />
 
       {!loading && !postsEnd && (

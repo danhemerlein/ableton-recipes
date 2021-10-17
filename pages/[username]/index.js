@@ -34,6 +34,8 @@ export async function getServerSideProps({ query }) {
 const UserProfilePage = ({ user, posts }) => {
   return (
     <main>
+      <Metatags title="user profile page" />
+
       <UserProfile user={user} />
       <PostFeed posts={posts} />
     </main>
