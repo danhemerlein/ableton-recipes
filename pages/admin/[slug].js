@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AuthCheck from '../../components/AuthCheck';
 import { auth, firestore, getPostByUserAndSlug } from '../../lib/firebase';
+import UpdatePostForm from './UpdatePostForm';
 
 const AdminSlug = ({}) => {
   return (
@@ -16,7 +17,7 @@ const AdminSlug = ({}) => {
 export default AdminSlug;
 
 function PostManager() {
-  const [preview, setPreview] = useState(false);
+  const [preview, setPreview] = useState(true);
   const [post, setPost] = useState([]);
   const [postRef, setPostRef] = useState(null);
 
@@ -46,18 +47,20 @@ function PostManager() {
       {post && (
         <>
           <section>
-            <h1>{post.title}</h1>
-            <p>ID: {post.slug}</p>
-
             {/* <PostForm
               postRef={postRef}
               defaultValues={post}
               preview={preview}
             /> */}
+
+            <UpdatePostForm
+              postRef={postRef}
+              defaultValues={post}
+              preview={preview}
+            />
           </section>
 
           <aside>
-            <h3>Tools</h3>
             <button onClick={() => setPreview(!preview)}>
               {preview ? 'Edit' : 'Preview'}
             </button>

@@ -1,4 +1,5 @@
 import { getDoc } from 'firebase/firestore';
+import Metatags from '../../components/Metatags';
 import PostFeed from '../../components/PostFeed';
 import UserProfile from '../../components/UserProfile';
 import { getPostsByUser, getUserWithUsername } from '../../lib/firebase';
