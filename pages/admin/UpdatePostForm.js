@@ -1,29 +1,38 @@
-import { Field, Form, Formik } from 'formik';
+import { serverTimestamp, updateDoc } from '@firebase/firestore';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React from 'react';
 import toast from 'react-hot-toast';
 import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
-import { formId } from './editPostFormModel';
+import { formId } from './updatePostFormModel';
+import schema from './validationSchema';
 
 const PostTitle = styled(Field)`
   width: 100%;
-  height: 200px;
 `;
 
 const PostContentTextArea = styled(Field)`
   width: 100%;
-  height: 200px;
+`;
+
+const FlexContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
-  const updatePost = async ({ content, published }) => {
-    // await postRef.update({
-    //   content,
-    //   published,
-    //   updatedAt: serverTimestamp(),
-    // });
-    // reset({ content, published });
-    toast.success('Post updated successfully!');
+  const updatePost = async (updatedPost) => {
+    const data = {
+      title: updatedPost.title,
+      content: updatedPost.content,
+      published: updatedPost.published,
+      updatedAt: serverTimestamp(),
+      ...updatedPost,
+    };
+
+    await updateDoc(postRef, data);
+
+    toast.success('post updated successfully!');
   };
 
   return (
@@ -41,39 +50,53 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
       ) : (
         <Formik
           initialValues={defaultValues}
-          // validationSchema={currentValidationSchema}
+          validationSchema={schema[0]}
           onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 400);
+            updatePost(values);
+            setSubmitting(false);
           }}
         >
           {({ values, errors, touched, isSubmitting }) => {
-            console.log('Formik values', values);
-            console.log('Formik errors', errors);
-            console.log('Formik touched', touched);
-
             return (
               <Form id={formId}>
-                <div style={'display: flex;'}>
+                <FlexContainer>
                   <label htmlFor="title">edit title</label>
                   <PostTitle
                     type="text"
                     name="title"
                     id="title"
-                    value={defaultValues.title}
+                    value={values.title}
                   />
-                </div>
+                  <ErrorMessage name="title" />
+                </FlexContainer>
 
-                <div style={'display: flex;'}>
+                <FlexContainer>
                   <label htmlFor="content">edit content</label>
-                  <PostContentTextArea name="content">
-                    {defaultValues.content}
-                  </PostContentTextArea>
-                </div>
+                  <PostContentTextArea
+                    type="textarea"
+                    name="content"
+                    name="content"
+                    values={values.content}
+                  ></PostContentTextArea>
+                  <ErrorMessage name="content" />
+                </FlexContainer>
+
+                <FlexContainer>
+                  <label htmlFor="published">published</label>
+
+                  <Field
+                    type="checkbox"
+                    name="published"
+                    id="published"
+                    value={values.published}
+                    checked={values.published}
+                  />
+                </FlexContainer>
 
                 <pre>{JSON.stringify(values, null, 2)}</pre>
+                <button className="btn-green" type="submit">
+                  submit edits
+                </button>
               </Form>
             );
           }}
