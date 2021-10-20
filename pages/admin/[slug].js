@@ -3,6 +3,7 @@ import Link from 'next/Link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AuthCheck from '../../components/AuthCheck';
+import ImageUploader from '../../components/ImageUploader';
 import { auth, firestore, getPostByUserAndSlug } from '../../lib/firebase';
 import UpdatePostForm from './UpdatePostForm';
 
@@ -47,17 +48,12 @@ function PostManager() {
       {post && (
         <>
           <section>
-            {/* <PostForm
-              postRef={postRef}
-              defaultValues={post}
-              preview={preview}
-            /> */}
-
             <UpdatePostForm
               postRef={postRef}
               defaultValues={post}
               preview={preview}
             />
+            <ImageUploader />
           </section>
 
           <aside>
