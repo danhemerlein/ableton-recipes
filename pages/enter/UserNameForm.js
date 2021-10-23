@@ -1,26 +1,10 @@
-import { signInWithPopup } from 'firebase/auth';
 import { doc, getDoc, writeBatch } from 'firebase/firestore';
 import _ from 'lodash';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { UserContext } from '../lib/context';
-import { auth, firestore, provider } from '../lib/firebase';
+import { UserContext } from '../../lib/context';
+import { firestore } from '../../lib/firebase';
 
-function SignInButton() {
-  const signInWithGoogle = async () => {
-    signInWithPopup(auth, provider);
-  };
-  return (
-    <button className="btn-green" onClick={signInWithGoogle}>
-      sign in with google
-    </button>
-  );
-}
-
-function SignOutButton() {
-  return <button onClick={() => auth.signOut()}>sign out</button>;
-}
-
-function UserNameForm() {
+export function UserNameForm() {
   const [formValue, setFormValue] = useState('');
   const [isValid, setIsValid] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -37,9 +21,9 @@ function UserNameForm() {
   const checkUsername = useCallback(
     _.debounce(async (username) => {
       if (username.length >= USERNAME_LENGTH) {
-        const ref = doc(firestore, 'usernames', username);
+        const usernameRef = doc(firestore, 'usernames', username);
 
-        const docSnap = await getDoc(ref);
+        const docSnap = await getDoc(usernameRef);
 
         const exists = await docSnap.exists();
 
@@ -70,7 +54,7 @@ function UserNameForm() {
 
   const onChange = (e) => {
     const val = e.target.value.toLowerCase();
-    const re = /^(?=[a-zA-Z0-9._]{3,15}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
+    const re = /^(?=[a-zA-Z0-9._]{3,16}$)(?!.*[_.]{2})[^_.].*[^_.]$/;
 
     // Only set form value if length is < 3 OR it passes regex
     if (val.length < USERNAME_LENGTH) {
@@ -127,22 +111,3 @@ function UserNameForm() {
     )
   );
 }
-
-const Enter = ({}) => {
-  const { user, username } = useContext(UserContext);
-
-  return (
-    <main>
-      {user ? (
-        !username ? (
-          <UserNameForm />
-        ) : (
-          <SignOutButton />
-        )
-      ) : (
-        <SignInButton />
-      )}
-    </main>
-  );
-};
-export default Enter;

@@ -1,6 +1,13 @@
-import { collectionGroup, doc, getDocs, query } from '@firebase/firestore';
-import { onSnapshot } from 'firebase/firestore';
+import {
+  collectionGroup,
+  doc,
+  getDocs,
+  onSnapshot,
+  query,
+} from '@firebase/firestore';
 import { useState } from 'react';
+import AuthCheck from '../../components/AuthCheck';
+import HeartButton from '../../components/HeartButton';
 import PostContent from '../../components/PostContent';
 import {
   firestore,
@@ -64,6 +71,10 @@ const Post = ({ post, path }) => {
         <p>
           <strong>{UIpost.heartCount || 0} 🤍</strong>
         </p>
+
+        <AuthCheck>
+          <HeartButton postRef={postRef}></HeartButton>
+        </AuthCheck>
       </aside>
     </main>
   );
