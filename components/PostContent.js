@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import ReactMarkdown from 'react-markdown';
+import AuthCheck from './AuthCheck';
+import LikeButton from './LikeButton';
 
-const PostContent = ({ post }) => {
+const PostContent = ({ post, postDocumentRef }) => {
   const createdAt =
     typeof post?.createdAt === 'number'
       ? new Date(post.createdAt)
@@ -17,7 +19,16 @@ const PostContent = ({ post }) => {
         </Link>{' '}
         on {createdAt.toISOString()}
       </span>
+
       <ReactMarkdown>{post?.content}</ReactMarkdown>
+
+      <p>
+        <strong>{post.heartCount || 0} 🤍</strong>
+      </p>
+
+      <AuthCheck>
+        <LikeButton postDocumentRef={postDocumentRef}></LikeButton>
+      </AuthCheck>
     </div>
   );
 };

@@ -1,13 +1,11 @@
 import {
-  collection,
   collectionGroup,
   doc,
   getDocs,
+  onSnapshot,
   query,
 } from '@firebase/firestore';
-import { useEffect, useState } from 'react';
-import AuthCheck from '../../components/AuthCheck';
-import HeartButton from '../../components/HeartButton';
+import { useState } from 'react';
 import PostContent from '../../components/PostContent';
 import {
   firestore,
@@ -58,42 +56,19 @@ export async function getStaticPaths() {
 
 const Post = ({ post, path }) => {
   const [UIpost, setUIpost] = useState(post);
-  // const postRef = doc(firestore, path);
-  const postHeartsCollectionReference = collection(firestore, path, 'hearts');
 
-  // doc reference can't be serialized as JSON
+  // fix this to get the post in another way
   const postDocumentRef = doc(firestore, path);
 
-  useEffect(async () => {
-    const collectionGroupQuery = query(collectionGroup(firestore, 'posts'));
-
-    const querySnapshot = await getDocs(collectionGroupQuery);
-
-    const postRef = querySnapshot.docs[0]?.ref;
-  }, []);
-
-  // onSnapshot(postDocumentRef, (doc) => {
-  //   setUIpost(doc.data());
-  // });
+  onSnapshot(postDocumentRef, (doc) => {
+    setUIpost(doc.data());
+  });
 
   return (
     <main>
       <section>
-        <PostContent post={UIpost} />
+        <PostContent post={UIpost} postDocumentRef={postDocumentRef} />
       </section>
-
-      <aside className="card">
-        <p>
-          <strong>{UIpost.heartCount || 0} 🤍</strong>
-        </p>
-
-        <AuthCheck>
-          <HeartButton
-            postDocumentRef={postDocumentRef}
-            heartsCollection={postHeartsCollectionReference}
-          ></HeartButton>
-        </AuthCheck>
-      </aside>
     </main>
   );
 };
