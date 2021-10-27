@@ -1,11 +1,11 @@
 import {
+  collection,
   collectionGroup,
   doc,
   getDocs,
-  onSnapshot,
   query,
 } from '@firebase/firestore';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AuthCheck from '../../components/AuthCheck';
 import HeartButton from '../../components/HeartButton';
 import PostContent from '../../components/PostContent';
@@ -25,7 +25,10 @@ export async function getStaticProps({ params }) {
   let path;
 
   if (userDocRef) {
-    const { postData, pathData } = await getPostByUserAndSlug(userDocRef, slug);
+    const { postData, pathData, refData } = await getPostByUserAndSlug(
+      userDocRef,
+      slug
+    );
 
     post = postData[0];
     path = pathData;
@@ -53,13 +56,27 @@ export async function getStaticPaths() {
   return { paths, fallback: 'blocking' };
 }
 
-const Post = ({ post, path }) => {
+const Post = ({ post, path, ref }) => {
   const [UIpost, setUIpost] = useState(post);
-  const postRef = doc(firestore, path);
+  // const postRef = doc(firestore, path);
+  const postHeartsCollectionReference = collection(firestore, path, 'hearts');
 
-  onSnapshot(postRef, (doc) => {
-    setUIpost(doc.data());
-  });
+  // doc reference can't be serialized as JSON
+  const postDocumentRef = doc(firestore, path);
+
+  useEffect(async () => {
+    console.log(postDocumentRef);
+
+    const collectionGroupQuery = query(collectionGroup(firestore, 'posts'));
+
+    const querySnapshot = await getDocs(collectionGroupQuery);
+
+    const postRef = querySnapshot.docs[0]?.ref;
+  }, []);
+
+  // onSnapshot(UIpostRef, (doc) => {
+  //   setUIpost(doc.data());
+  // });
 
   return (
     <main>
@@ -73,7 +90,10 @@ const Post = ({ post, path }) => {
         </p>
 
         <AuthCheck>
-          <HeartButton postRef={postRef}></HeartButton>
+          <HeartButton
+            postDocumentRef={postDocumentRef}
+            heartsCollection={postHeartsCollectionReference}
+          ></HeartButton>
         </AuthCheck>
       </aside>
     </main>
