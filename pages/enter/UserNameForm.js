@@ -25,7 +25,7 @@ export function UserNameForm() {
 
         const docSnap = await getDoc(usernameRef);
 
-        const exists = await docSnap.exists();
+        const exists = docSnap.exists();
 
         setIsValid(!exists);
         setLoading(false);

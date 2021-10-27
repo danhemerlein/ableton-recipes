@@ -56,7 +56,7 @@ export async function getStaticPaths() {
   return { paths, fallback: 'blocking' };
 }
 
-const Post = ({ post, path, ref }) => {
+const Post = ({ post, path }) => {
   const [UIpost, setUIpost] = useState(post);
   // const postRef = doc(firestore, path);
   const postHeartsCollectionReference = collection(firestore, path, 'hearts');
@@ -65,8 +65,6 @@ const Post = ({ post, path, ref }) => {
   const postDocumentRef = doc(firestore, path);
 
   useEffect(async () => {
-    console.log(postDocumentRef);
-
     const collectionGroupQuery = query(collectionGroup(firestore, 'posts'));
 
     const querySnapshot = await getDocs(collectionGroupQuery);
@@ -74,7 +72,7 @@ const Post = ({ post, path, ref }) => {
     const postRef = querySnapshot.docs[0]?.ref;
   }, []);
 
-  // onSnapshot(UIpostRef, (doc) => {
+  // onSnapshot(postDocumentRef, (doc) => {
   //   setUIpost(doc.data());
   // });
 

@@ -7,8 +7,6 @@ import { UserNameForm } from './UserNameForm';
 
 const Enter = ({}) => {
   const { user, username } = useContext(UserContext);
-  console.log('Enter user', user);
-  console.log('Enter username', username);
 
   return (
     <main>
