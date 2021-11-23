@@ -1,13 +1,12 @@
-import { doc, onSnapshot } from '@firebase/firestore';
+import { doc } from '@firebase/firestore';
 import Link from 'next/Link';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import AuthCheck from '../../components/AuthCheck';
-import ImageUploader from '../../components/ImageUploader';
 import { auth, firestore, getPostByUserAndSlug } from '../../lib/firebase';
 import UpdatePostForm from './UpdatePostForm';
 
-const AdminSlug = ({}) => {
+const AdminSlug = () => {
   return (
     <AuthCheck>
       <PostManager />
@@ -27,7 +26,7 @@ function PostManager() {
 
   useEffect(async () => {
     // turn off realtime subscription
-    let unsubscribe;
+    // let unsubscribe;
 
     const userRef = doc(firestore, 'users', auth.currentUser.uid);
 
@@ -36,16 +35,16 @@ function PostManager() {
     setPost(postData);
     setPostRef(refData);
 
-    unsubscribe = onSnapshot(refData, (doc) => {
-      setPost(doc.data());
-    });
+    // unsubscribe = onSnapshot(refData, (doc) => {
+    //   setPost(doc.data());
+    // });
 
-    return unsubscribe;
+    // return unsubscribe;
   }, []);
 
   return (
     <main>
-      {post && (
+      {post.length && (
         <>
           <section>
             <UpdatePostForm
@@ -53,7 +52,6 @@ function PostManager() {
               defaultValues={post}
               preview={preview}
             />
-            <ImageUploader />
           </section>
 
           <aside>

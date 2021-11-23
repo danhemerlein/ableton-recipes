@@ -5,16 +5,16 @@ import {
   orderBy,
   query,
   startAfter,
+  Timestamp,
   where,
 } from '@firebase/firestore';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 import Loader from '../components/Loader';
 import Metatags from '../components/Metatags';
 import PostFeed from '../components/PostFeed';
 import { docToJSON, firestore } from '../lib/firebase';
 
-const LIMIT = 1;
+const LIMIT = 10;
 
 export async function getServerSideProps(context) {
   let posts;
@@ -46,7 +46,7 @@ export default function Home(props) {
 
     const cursor =
       typeof last.createdAt === 'number'
-        ? fromMillis(last.createdAt)
+        ? Timestamp.fromMillis(last.createdAt)
         : last.createdAt;
 
     const collectionGroupQuery = query(
@@ -79,8 +79,6 @@ export default function Home(props) {
       <Loader show={loading} />
 
       {postsEnd && 'you have seen it all'}
-
-      <button onClick={() => toast.success('hello toast!')}>toast me</button>
     </main>
   );
 }

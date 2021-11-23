@@ -1,4 +1,9 @@
-import { serverTimestamp, updateDoc } from '@firebase/firestore';
+import {
+  deleteDoc,
+  serverTimestamp,
+  Timestamp,
+  updateDoc,
+} from '@firebase/firestore';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import React from 'react';
 import toast from 'react-hot-toast';
@@ -21,18 +26,26 @@ const FlexContainer = styled.div`
 `;
 
 const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
+  console.log(defaultValues);
   const updatePost = async (updatedPost) => {
     const data = {
       title: updatedPost.title,
       content: updatedPost.content,
       published: updatedPost.published,
-      updatedAt: serverTimestamp(),
       ...updatedPost,
+      createdAt: Timestamp.fromMillis(defaultValues[0].createdAt),
+      updatedAt: serverTimestamp(),
     };
 
     await updateDoc(postRef, data);
 
     toast.success('post updated successfully!');
+  };
+
+  const deletePost = async () => {
+    if (window.confirm('confirm you want to delete this post')) {
+      await deleteDoc(postRef);
+    }
   };
 
   return (
@@ -43,13 +56,13 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
         <>
           <p>you are previewing this post, select edit to make changes</p>
           <div className="card">
-            <ReactMarkdown>{defaultValues.title}</ReactMarkdown>
-            <ReactMarkdown>{defaultValues.content}</ReactMarkdown>
+            <ReactMarkdown>{defaultValues[0].title}</ReactMarkdown>
+            <ReactMarkdown>{defaultValues[0].content}</ReactMarkdown>
           </div>
         </>
       ) : (
         <Formik
-          initialValues={defaultValues}
+          initialValues={defaultValues[0]}
           validationSchema={schema[0]}
           onSubmit={(values, { setSubmitting }) => {
             updatePost(values);
@@ -76,7 +89,7 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
                     type="textarea"
                     name="content"
                     name="content"
-                    values={values.content}
+                    value={values.content}
                   ></PostContentTextArea>
                   <ErrorMessage name="content" />
                 </FlexContainer>
@@ -102,6 +115,8 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
           }}
         </Formik>
       )}
+
+      <button onClick={deletePost}>delete post</button>
     </>
   );
 };

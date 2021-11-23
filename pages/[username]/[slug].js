@@ -1,10 +1,4 @@
-import {
-  collectionGroup,
-  doc,
-  getDocs,
-  onSnapshot,
-  query,
-} from '@firebase/firestore';
+import { collectionGroup, doc, getDocs, query } from '@firebase/firestore';
 import { useState } from 'react';
 import PostContent from '../../components/PostContent';
 import {
@@ -23,10 +17,7 @@ export async function getStaticProps({ params }) {
   let path;
 
   if (userDocRef) {
-    const { postData, pathData, refData } = await getPostByUserAndSlug(
-      userDocRef,
-      slug
-    );
+    const { postData, pathData } = await getPostByUserAndSlug(userDocRef, slug);
 
     post = postData[0];
     path = pathData;
@@ -60,9 +51,9 @@ const Post = ({ post, path }) => {
   // fix this to get the post in another way
   const postDocumentRef = doc(firestore, path);
 
-  onSnapshot(postDocumentRef, (doc) => {
-    setUIpost(doc.data());
-  });
+  // onSnapshot(postDocumentRef, (doc) => {
+  //   setUIpost(doc.data());
+  // });
 
   return (
     <main>

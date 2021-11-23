@@ -9,7 +9,7 @@ import PostFeed from '../../components/PostFeed';
 import { UserContext } from '../../lib/context';
 import { auth, firestore, getAdminPostsList } from '../../lib/firebase';
 
-const AdminPostsPage = ({}) => {
+const AdminPostsPage = () => {
   return (
     <AuthCheck>
       <main>
@@ -42,6 +42,8 @@ function CreateNewPost() {
   const router = useRouter();
   const { username } = useContext(UserContext);
   const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [published, setPublished] = useState(false);
 
   // ensure slug is URL safe
   const slug = encodeURI(_.kebabCase(title));
@@ -58,11 +60,11 @@ function CreateNewPost() {
     // Tip: give all fields a default value here
     const data = {
       title,
+      content,
+      published,
       slug,
       uid,
       username,
-      published: false,
-      content: '# new post created with form',
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
       heartCount: 0,
@@ -82,6 +84,19 @@ function CreateNewPost() {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="post title"
+      />
+      <input
+        type="textarea"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+        placeholder="post content"
+      />
+      <label>publish now?</label>
+      <input
+        type="checkbox"
+        value={published}
+        onChange={(e) => setPublished(e.target.value)}
+        placeholder="post content"
       />
       <p>
         <strong>Slug:</strong> {slug}
