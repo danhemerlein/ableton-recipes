@@ -16,7 +16,7 @@ import { docToJSON, firestore } from '../lib/firebase';
 
 const LIMIT = 10;
 
-export async function getServerSideProps(context) {
+export async function getServerSideProps() {
   let posts;
   // gets all sub collecitions since posts are attached to users
   const collectionGroupQuery = query(

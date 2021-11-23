@@ -16,7 +16,7 @@ const NavBar = ({}) => {
         {username && (
           <>
             <li>
-              <Link href="/admin">write posts</Link>
+              <Link href="/admin">view admin panel</Link>
             </li>
             <li>
               <Link href={`/${username}`}>
