@@ -26,7 +26,6 @@ const FlexContainer = styled.div`
 `;
 
 const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
-  console.log(defaultValues);
   const updatePost = async (updatedPost) => {
     const data = {
       title: updatedPost.title,

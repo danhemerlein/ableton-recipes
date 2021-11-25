@@ -28,7 +28,7 @@ export async function getServerSideProps({ query }) {
 
   return {
     // will be pased to the page componet as props
-    props: { user, posts },
+    props: { user, posts, username },
   };
 }
 
