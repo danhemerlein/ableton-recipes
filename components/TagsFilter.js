@@ -55,7 +55,6 @@ export default function TagsFilter({ submitHandler }) {
                         name="tags"
                         id={tag.id}
                         value={tag.id}
-                        // checked={values.published}
                       ></Tag>
                     </TagLitItem>
                   );
