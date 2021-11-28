@@ -13,7 +13,7 @@ import Loader from '../components/Loader';
 import Metatags from '../components/Metatags';
 import PostFeed from '../components/PostFeed';
 import TagsFilter from '../components/TagsFilter';
-import { docToJSON, firestore } from '../lib/firebase';
+import { docToJSON, firestore, getPostsByTags } from '../lib/firebase';
 
 const LIMIT = 10;
 
@@ -68,11 +68,15 @@ export default function Home(props) {
     }
   };
 
+  const filterPostsByTag = async (tags) => {
+    setPosts(await getPostsByTags(tags));
+  };
+
   return (
     <main>
       <Metatags title="fireship next" />
 
-      <TagsFilter />
+      <TagsFilter submitHandler={filterPostsByTag} />
       <PostFeed posts={posts} />
 
       {!loading && !postsEnd && (

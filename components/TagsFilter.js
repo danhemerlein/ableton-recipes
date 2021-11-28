@@ -1,3 +1,4 @@
+import { Field, Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getAllDocumentsInACollection } from '../lib/firebase';
@@ -9,15 +10,20 @@ const TagsList = styled.ul`
   display: flex;
 `;
 
-const Tag = styled.button`
+const TagLitItem = styled.li`
   border: 1px solid black;
   padding: 10px;
   border-radius: 25%;
   display: inline;
   margin: 0 10px;
+  width: 20%;
+  display: flex;
+  cursor: pointer;
 `;
 
-export default function TagsFilter() {
+const Tag = styled(Field)``;
+
+export default function TagsFilter({ submitHandler }) {
   const [tags, setTags] = useState([]);
 
   useEffect(async () => {
@@ -28,15 +34,41 @@ export default function TagsFilter() {
   return (
     <>
       <p>tags filter</p>
-      <TagsList>
-        {tags.map((tag) => {
+
+      <Formik
+        initialValues={{ tags: [] }}
+        onSubmit={(values, { setSubmitting }) => {
+          submitHandler(values.tags);
+          setSubmitting(false);
+        }}
+      >
+        {({ values, errors, touched, isSubmitting }) => {
           return (
-            <li>
-              <Tag>{tag.id}</Tag>
-            </li>
+            <Form id="tags-filter">
+              <TagsList>
+                {tags.map((tag) => {
+                  return (
+                    <TagLitItem>
+                      <label htmlFor={tag.id}>{tag.id}</label>
+                      <Tag
+                        type="checkbox"
+                        name="tags"
+                        id={tag.id}
+                        value={tag.id}
+                        // checked={values.published}
+                      ></Tag>
+                    </TagLitItem>
+                  );
+                })}
+              </TagsList>
+
+              <button type="submit" className="btn-green">
+                filter posts
+              </button>
+            </Form>
           );
-        })}
-      </TagsList>
+        }}
+      </Formik>
     </>
   );
 }
