@@ -12,6 +12,7 @@ import { useState } from 'react';
 import Loader from '../components/Loader';
 import Metatags from '../components/Metatags';
 import PostFeed from '../components/PostFeed';
+import TagsFilter from '../components/TagsFilter';
 import { docToJSON, firestore } from '../lib/firebase';
 
 const LIMIT = 10;
@@ -70,6 +71,8 @@ export default function Home(props) {
   return (
     <main>
       <Metatags title="fireship next" />
+
+      <TagsFilter />
       <PostFeed posts={posts} />
 
       {!loading && !postsEnd && (

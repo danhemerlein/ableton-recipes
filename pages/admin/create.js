@@ -27,11 +27,13 @@ function CreateNewPost() {
 
     const userRef = doc(firestore, 'users', uid);
 
+    console.log(published);
+
     // Tip: give all fields a default value here
     const data = {
       title,
       content,
-      published,
+      published: Boolean(published),
       slug,
       uid,
       username,
@@ -66,7 +68,6 @@ function CreateNewPost() {
         type="checkbox"
         value={published}
         onChange={(e) => setPublished(e.target.value)}
-        placeholder="post content"
       />
       <p>
         <strong>Slug:</strong> {slug}

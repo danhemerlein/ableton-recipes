@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import AuthCheck from '../../components/AuthCheck';
 import Metatags from '../../components/Metatags';
 import PostFeed from '../../components/PostFeed';
+import TagsFilter from '../../components/TagsFilter';
 import { auth, getAdminPostsList } from '../../lib/firebase';
 
 const AdminPostsPage = () => {
@@ -32,6 +33,7 @@ function PostList() {
       </h1>
       <h1>or</h1>
       <h1>Manage your Posts</h1>
+      <TagsFilter />
       <PostFeed posts={posts} admin />
     </>
   );
