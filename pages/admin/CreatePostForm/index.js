@@ -1,19 +1,26 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
+
+import { useRouter } from 'next/dist/client/router';
+import _ from 'lodash';
 import styled from 'styled-components';
 import { formId } from './createPostFormModel';
 import defaultValues from './defaultValues';
 import schema from './validationSchema';
+import { auth } from 'lib/firebase';
+import { UserContext } from 'lib/context';
+import { useContext } from 'react';
+import { FlexContainer } from 'styles/elements/containers';
+import { remHelper } from 'lib/utilities/remHelper';
+
+const FormFieldContainer = styled(FlexContainer)`
+  margin: ${remHelper[16]} 0;
+`;
 
 const TagsList = styled.ul`
   margin: 0 0 10px 0;
   padding: 0;
   list-style: none;
   display: flex;
-`;
-
-const FlexContainer = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 
 const TagLitItem = styled.li`
@@ -27,63 +34,104 @@ const TagLitItem = styled.li`
   cursor: pointer;
 `;
 
-const TextInput = styled.input`
-  margin: 20px 0px;
-`;
+// Create a new post in firestore
+const createPost = async (formValues) => {
+  const uid = auth.currentUser.uid;
+  const { username } = useContext(UserContext);
 
-const PublishedContainer = styled.div`
-  margin: 20px 0px;
-  display: flex;
-  width: 25%;
-`;
+  const userRef = doc(firestore, 'users', uid);
 
-const CreatePostForm = ({ submitHandler, tags }) => {
+  // ensure slug is URL safe
+  const slug = encodeURI(_.kebabCase(title));
+
+  const router = useRouter();
+
+  // Tip: give all fields a default value here
+  const data = {
+    username,
+    uid,
+    title: formValues.title,
+    link: formValues.link,
+    published: formValues.published,
+    tags: formValues.tags,
+    slug,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+    heartCount: 0,
+  };
+
+  await addDoc(collection(userRef, 'posts'), data);
+
+  toast.success('Post created!');
+
+  // Imperative navigation after doc is set
+  router.push(`/admin/${slug}`);
+};
+
+const CreatePostForm = ({ tags, authors }) => {
   return (
     <Formik
-      initialValues={defaultValues[0]}
+      initialValues={defaultValues}
       validationSchema={schema[0]}
       onSubmit={(values, { setSubmitting }) => {
-        submitHandler(values);
+        createPost(values);
         setSubmitting(false);
       }}
     >
       {({ values, errors, touched, isSubmitting }) => {
+        console.log(values);
         return (
           <Form id={formId}>
-            <FlexContainer>
+            <FormFieldContainer direction="column">
               <label htmlFor="title">title</label>
               <Field type="text" name="title" id="title" />
               <ErrorMessage name="title" />
-            </FlexContainer>
+            </FormFieldContainer>
 
-            <FlexContainer>
+            <FormFieldContainer direction="column">
               <label htmlFor="link">link</label>
-              <Field type="text" name="link" name="link"></Field>
+              <Field type="text" name="link"></Field>
               <ErrorMessage name="link" />
-            </FlexContainer>
+            </FormFieldContainer>
 
-            <FlexContainer>
-              <label htmlFor="published">published</label>
+            <label htmlFor="author">author</label>
 
-              <Field type="checkbox" name="published" id="published" />
-            </FlexContainer>
-
-            <TagsList>
-              {tags.map((tag) => {
+            <Field as="select" name="author" id="author">
+              <option value="">- select an anthor -</option>
+              {authors.map((author) => {
                 return (
-                  <>
-                    <TagLitItem>
+                  <option value={author.name} key={author.name}>
+                    {author.name}
+                  </option>
+                );
+              })}
+            </Field>
+
+            <FormFieldContainer>
+              <TagsList>
+                {tags.map((tag) => {
+                  return (
+                    <TagLitItem key={tag.id}>
                       <label htmlFor={tag.id}>{tag.id}</label>
                       <input type="checkbox" name="tags" id={tag.id} />
                     </TagLitItem>
-                  </>
-                );
-              })}
-            </TagsList>
+                  );
+                })}
+              </TagsList>
+            </FormFieldContainer>
 
-            <p>
-              <strong>Slug:</strong> {slug}
-            </p>
+            <FormFieldContainer items="center" justify="center">
+              <label htmlFor="published">published</label>
+
+              <Field type="checkbox" name="published" id="published" />
+            </FormFieldContainer>
+
+            <FormFieldContainer>
+              <p>
+                <strong>Slug:</strong> {encodeURI(_.kebabCase(values.title))}
+              </p>
+            </FormFieldContainer>
+
             <button type="submit" className="btn-green">
               create New Post
             </button>

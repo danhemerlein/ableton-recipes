@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import createPostFormModel from './createPostFormModel';
 
 const {
-  formField: { title, link, author, authorLink, tags, published },
+  formField: { title, link, author, tags, published },
 } = createPostFormModel;
 
 const schema = [
@@ -15,11 +15,7 @@ const schema = [
       .max(80)
       .min(3)
       .required(`${author.errorMessage}`),
-    [authorLink.name]: yup
-      .string()
-      .max(80)
-      .min(3)
-      .required(`${authorLink.errorMessage}`),
+
     [tags.name]: yup
       .array()
       .of(yup.string().min(1))

@@ -19,12 +19,6 @@ const model = {
       errorMessage: 'author is required',
     },
 
-    authorLink: {
-      name: 'authorLink',
-      label: 'enter author link',
-      errorMessage: 'author link is required',
-    },
-
     tags: {
       name: 'tags',
       label: 'tags',

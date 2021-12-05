@@ -11,6 +11,7 @@ import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
 import { formId } from './updatePostFormModel';
 import schema from './validationSchema';
+import { FlexContainer } from 'styles/elements/containers';
 
 const PostTitle = styled(Field)`
   width: 100%;
@@ -18,11 +19,6 @@ const PostTitle = styled(Field)`
 
 const PostContentTextArea = styled(Field)`
   width: 100%;
-`;
-
-const FlexContainer = styled.div`
-  display: flex;
-  flex-direction: column;
 `;
 
 const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
@@ -71,7 +67,7 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
           {({ values, errors, touched, isSubmitting }) => {
             return (
               <Form id={formId}>
-                <FlexContainer>
+                <FlexContainer direction="column">
                   <label htmlFor="title">edit title</label>
                   <PostTitle
                     type="text"
@@ -82,7 +78,7 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
                   <ErrorMessage name="title" />
                 </FlexContainer>
 
-                <FlexContainer>
+                <FlexContainer direction="column">
                   <label htmlFor="content">edit content</label>
                   <PostContentTextArea
                     type="textarea"
@@ -93,7 +89,7 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
                   <ErrorMessage name="content" />
                 </FlexContainer>
 
-                <FlexContainer>
+                <FlexContainer direction="column">
                   <label htmlFor="published">published</label>
 
                   <Field
