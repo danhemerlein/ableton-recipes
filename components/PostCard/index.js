@@ -1,14 +1,39 @@
 import Link from 'next/link';
 import styled from 'styled-components';
+import {
+  getDesktopMarginLeft,
+  getDestkopMarginRight,
+  getTabletMarginLeft,
+  getTabletMarginRight,
+} from './lib';
 import { P, H2 } from 'styles/elements/typography';
 import { FlexContainer } from 'styles/elements/containers';
 import { remHelper } from 'lib/utilities/remHelper';
+import { above } from 'styles/utilities';
 
 const Card = styled.li`
-  width: 25%;
+  width: 100%;
+
   border: 1px solid;
   border-color: ${({ theme }) => theme.border};
   padding: ${remHelper[8]};
+
+  ${above.tablet`
+    width: calc(50% - ${remHelper[8]});
+
+    ${({ index }) =>
+      String(index) && `margin-right: ${getTabletMarginRight(String(index))};`}
+    ${({ index }) =>
+      String(index) && `margin-left: ${getTabletMarginLeft(String(index))};`}
+  `}
+
+  ${above.desktop`
+    width: calc(25% - ${remHelper.override(12)});
+    ${({ index }) =>
+      String(index) && `margin-right: ${getDestkopMarginRight(String(index))};`}
+    ${({ index }) =>
+      String(index) && `margin-left: ${getDesktopMarginLeft(String(index))};`}
+  `};
 `;
 
 const TagsList = styled.ul`

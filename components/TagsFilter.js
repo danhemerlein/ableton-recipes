@@ -48,7 +48,7 @@ export default function TagsFilter({ submitHandler }) {
               <TagsList>
                 {tags.map((tag) => {
                   return (
-                    <TagLitItem>
+                    <TagLitItem key={tag.id}>
                       <label htmlFor={tag.id}>{tag.id}</label>
                       <Tag
                         type="checkbox"

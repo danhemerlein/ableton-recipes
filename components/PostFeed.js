@@ -1,9 +1,11 @@
 import { PostCard } from './PostCard';
 import styled from 'styled-components';
+import { remHelper } from 'lib/utilities/remHelper';
 
 const Feed = styled.ul`
   display: flex;
   flex-wrap: wrap;
+  padding: ${remHelper[16]};
 `;
 
 const PostFeed = ({ posts, admin }) => {
@@ -11,10 +13,12 @@ const PostFeed = ({ posts, admin }) => {
     return null;
   }
 
+  console.log(posts);
+
   return (
     <Feed>
       {posts.map((post) => (
-        <PostCard post={post} key={post.slug} admin={admin} />
+        <PostCard post={post} key={post.id} admin={admin} />
       ))}
     </Feed>
   );
