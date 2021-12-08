@@ -1,5 +1,15 @@
 import Link from 'next/link';
 import styled from 'styled-components';
+import { P, H2 } from 'styles/elements/typography';
+import { FlexContainer } from 'styles/elements/containers';
+import { remHelper } from 'lib/utilities/remHelper';
+
+const Card = styled.li`
+  width: 25%;
+  border: 1px solid;
+  border-color: ${({ theme }) => theme.border};
+  padding: ${remHelper[8]};
+`;
 
 const TagsList = styled.ul`
   margin: 0 0 10px 0;
@@ -7,53 +17,43 @@ const TagsList = styled.ul`
   list-style: none;
 `;
 
-const Tag = styled.li`
+const Tag = styled(P)`
   border: 1px solid black;
-  padding: 10px;
+  padding: ${remHelper[4]};
   border-radius: 25%;
   display: inline;
   margin: 0;
 `;
 
+const TagsContainer = styled(FlexContainer)`
+  margin-top: ${remHelper[8]};
+`;
+
 export function PostCard({ post, admin = false }) {
   return (
-    <div className="card">
-      {admin && (
-        <>
-          {post.published ? (
-            <p className="text-success">Live</p>
-          ) : (
-            <p className="text-danger">Unpublished</p>
-          )}
-        </>
-      )}
+    <Card>
+      {admin && <>{post.published ? <P>Live</P> : <P>Unpublished</P>}</>}
 
       <Link href={`/${post.username}/${post.slug}`}>
-        <h2>
-          <a>{post.title}</a>
-        </h2>
+        <H2>{post.title}</H2>
       </Link>
 
-      <p>{post.content}</p>
-
-      <p>tags:</p>
-      <TagsList>
-        {post.tags.map((tag) => {
-          return <Tag key={tag}>{tag}</Tag>;
-        })}
-      </TagsList>
+      <TagsContainer>
+        <P>tags:</P>
+        <TagsList>
+          {post.tags.map((tag) => {
+            return (
+              <Tag as="li" key={tag}>
+                {tag}
+              </Tag>
+            );
+          })}
+        </TagsList>
+      </TagsContainer>
 
       <span>💗 {post.heartCount || 0}</span>
 
-      {admin && (
-        <>
-          <Link href={`/admin/${post.slug}`}>
-            <h3>
-              <button className="btn-blue">Edit</button>
-            </h3>
-          </Link>
-        </>
-      )}
-    </div>
+      {admin && <Link href={`/admin/${post.slug}`}>Edit</Link>}
+    </Card>
   );
 }

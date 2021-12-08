@@ -10,12 +10,12 @@ const PostContent = ({ post, postDocumentRef }) => {
       : post.createdAt.toDate();
 
   return (
-    <div className="card">
+    <div>
       <h1>{post?.title}</h1>
-      <span className="text-sm">
+      <span>
         Written by{' '}
         <Link href={`/${post.username}/`}>
-          <a className="text-info">@{post.username}</a>
+          <a>@{post.username}</a>
         </Link>{' '}
         on {createdAt.toISOString()}
       </span>

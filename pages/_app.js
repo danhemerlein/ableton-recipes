@@ -24,9 +24,10 @@ function App({ Component, pageProps }) {
 
   return (
     <AppContainer>
+      <GlobalReset />
+
       <ThemeProvider theme={theme[mode]}>
         <ThemeContextProvider data={mode}>
-          <GlobalReset />
           <UserContext.Provider value={userData}>
             <NavBar />
             <Component {...pageProps} />

@@ -61,9 +61,7 @@ export default function TagsFilter({ submitHandler }) {
                 })}
               </TagsList>
 
-              <button type="submit" className="btn-green">
-                filter posts
-              </button>
+              <button type="submit">filter posts</button>
             </Form>
           );
         }}

@@ -50,9 +50,8 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
       {preview ? (
         <>
           <p>you are previewing this post, select edit to make changes</p>
-          <div className="card">
+          <div>
             <ReactMarkdown>{defaultValues[0].title}</ReactMarkdown>
-            <ReactMarkdown>{defaultValues[0].content}</ReactMarkdown>
           </div>
         </>
       ) : (
@@ -79,17 +78,6 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
                 </FlexContainer>
 
                 <FlexContainer direction="column">
-                  <label htmlFor="content">edit content</label>
-                  <PostContentTextArea
-                    type="textarea"
-                    name="content"
-                    name="content"
-                    value={values.content}
-                  ></PostContentTextArea>
-                  <ErrorMessage name="content" />
-                </FlexContainer>
-
-                <FlexContainer direction="column">
                   <label htmlFor="published">published</label>
 
                   <Field
@@ -102,9 +90,7 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
                 </FlexContainer>
 
                 <pre>{JSON.stringify(values, null, 2)}</pre>
-                <button className="btn-green" type="submit">
-                  submit edits
-                </button>
+                <button type="submit">submit edits</button>
               </Form>
             );
           }}

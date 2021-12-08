@@ -6,9 +6,5 @@ export function SignInWithGoogleButton() {
     signInWithPopup(auth, provider);
   };
 
-  return (
-    <button className="btn-green" onClick={signInWithGoogle}>
-      sign in with google
-    </button>
-  );
+  return <button onClick={signInWithGoogle}>sign in with google</button>;
 }

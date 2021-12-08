@@ -1,39 +1,52 @@
 import Link from 'next/link';
 import { useContext } from 'react';
 import { UserContext } from '../lib/context';
+import styled from 'styled-components';
+import { remHelper } from 'lib/utilities/remHelper';
+import { P } from 'styles/elements/typography';
+
+const StyledNav = styled.nav`
+  height: ${remHelper[32]};
+`;
+
+const UL = styled.ul`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const NavBar = ({}) => {
   const { user, username } = useContext(UserContext);
 
   return (
-    <nav className="navbar">
-      <ul>
-        <li>
+    <StyledNav>
+      <UL>
+        <P as="li">
           <Link href="/">feed</Link>
-        </li>
+        </P>
 
         {/* user is signed in and has a username */}
         {username && (
           <>
-            <li>
+            <P as="li">
               <Link href="/admin">view admin panel</Link>
-            </li>
-            <li>
+            </P>
+
+            <P as="li">
               <Link href={`/${username}`}>
                 <img src={user?.photoURL} alt="" />
               </Link>
-            </li>
+            </P>
           </>
         )}
 
         {/* user is not signed in OR has not created a user name */}
         {!username && (
-          <li>
+          <P as="li">
             <Link href="/enter">log in</Link>
-          </li>
+          </P>
         )}
-      </ul>
-    </nav>
+      </UL>
+    </StyledNav>
   );
 };
 export default NavBar;

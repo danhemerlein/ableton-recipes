@@ -145,9 +145,7 @@ const CreatePostForm = ({ tags, authors }) => {
               </p>
             </FormFieldContainer>
 
-            <button type="submit" className="btn-green">
-              create New Post
-            </button>
+            <button type="submit">create new post</button>
             <pre>{JSON.stringify(values, null, 2)}</pre>
           </Form>
         );

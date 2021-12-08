@@ -74,9 +74,9 @@ export function UserNameForm() {
     if (loading) {
       return <p>Checking...</p>;
     } else if (isValid) {
-      return <p className="text-success">{username} is available!</p>;
+      return <p>{username} is available!</p>;
     } else if (username && !isValid) {
-      return <p className="text-danger">That username is taken!</p>;
+      return <p>That username is taken!</p>;
     } else {
       return <p></p>;
     }
@@ -99,7 +99,7 @@ export function UserNameForm() {
             loading={loading}
           />
 
-          <button type="submit" className="btn-green" disabled={!isValid}>
+          <button type="submit" disabled={!isValid}>
             submit
           </button>
           <h3>debug state</h3>
