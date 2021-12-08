@@ -6,11 +6,15 @@ import styled from 'styled-components';
 import { formId } from './createPostFormModel';
 import defaultValues from './defaultValues';
 import schema from './validationSchema';
-import { auth } from 'lib/firebase';
+import toast from 'react-hot-toast';
+
+import { auth, firestore } from 'lib/firebase';
 import { UserContext } from 'lib/context';
 import { useContext } from 'react';
 import { FlexContainer } from 'styles/elements/containers';
 import { remHelper } from 'lib/utilities/remHelper';
+import { doc } from '@firebase/firestore';
+import { serverTimestamp, addDoc, collection } from '@firebase/firestore';
 
 const FormFieldContainer = styled(FlexContainer)`
   margin: ${remHelper[16]} 0;
@@ -34,41 +38,43 @@ const TagLitItem = styled.li`
   cursor: pointer;
 `;
 
-// Create a new post in firestore
-const createPost = async (formValues) => {
-  const uid = auth.currentUser.uid;
-  const { username } = useContext(UserContext);
-
-  const userRef = doc(firestore, 'users', uid);
-
-  // ensure slug is URL safe
-  const slug = encodeURI(_.kebabCase(title));
-
-  const router = useRouter();
-
-  // Tip: give all fields a default value here
-  const data = {
-    username,
-    uid,
-    title: formValues.title,
-    link: formValues.link,
-    published: formValues.published,
-    tags: formValues.tags,
-    slug,
-    createdAt: serverTimestamp(),
-    updatedAt: serverTimestamp(),
-    heartCount: 0,
-  };
-
-  await addDoc(collection(userRef, 'posts'), data);
-
-  toast.success('Post created!');
-
-  // Imperative navigation after doc is set
-  router.push(`/admin/${slug}`);
-};
+const TagCheckbox = styled(Field)`
+  cursor: pointer;
+  width: ${remHelper[16]};
+`;
 
 const CreatePostForm = ({ tags, authors }) => {
+  const { username } = useContext(UserContext);
+  const router = useRouter();
+
+  // Create a new post in firestore
+  const createPost = async (formValues) => {
+    const uid = auth.currentUser.uid;
+
+    const userRef = doc(firestore, 'users', uid);
+
+    // ensure slug is URL safe
+    const slug = encodeURI(_.kebabCase(title));
+
+    // Tip: give all fields a default value here
+    const data = {
+      username,
+      uid,
+      title: formValues.title,
+      link: formValues.link,
+      published: formValues.published,
+      tags: formValues.tags,
+      slug,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+      heartCount: 0,
+    };
+
+    await addDoc(collection(userRef, 'posts'), data);
+
+    toast.success('Post created!');
+  };
+
   return (
     <Formik
       initialValues={defaultValues}
@@ -76,6 +82,8 @@ const CreatePostForm = ({ tags, authors }) => {
       onSubmit={(values, { setSubmitting }) => {
         createPost(values);
         setSubmitting(false);
+        // Imperative navigation after doc is set
+        router.push(`/admin/${slug}`);
       }}
     >
       {({ values, errors, touched, isSubmitting }) => {
@@ -113,7 +121,12 @@ const CreatePostForm = ({ tags, authors }) => {
                   return (
                     <TagLitItem key={tag.id}>
                       <label htmlFor={tag.id}>{tag.id}</label>
-                      <input type="checkbox" name="tags" id={tag.id} />
+                      <TagCheckbox
+                        type="checkbox"
+                        name="tags"
+                        id={tag.id}
+                        value={tag.id}
+                      />
                     </TagLitItem>
                   );
                 })}
