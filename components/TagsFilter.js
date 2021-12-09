@@ -2,23 +2,25 @@ import { Field, Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { getAllDocumentsInACollection } from '../lib/firebase';
+import { P } from 'styles/elements/typography';
+import { remHelper } from 'lib/utilities/remHelper';
 
 const TagsList = styled.ul`
-  margin: 0 0 10px 0;
+  margin: ${remHelper[8]} 0 ${remHelper[8]} 0;
   padding: 0;
   list-style: none;
   display: flex;
 `;
 
-const TagLitItem = styled.li`
+const TagLitItem = styled(P)`
+  cursor: pointer;
+
   border: 1px solid black;
-  padding: 10px;
+  padding: ${remHelper[8]};
   border-radius: 25%;
   display: inline;
-  margin: 0 10px;
-  width: 20%;
+  margin: 0 ${remHelper[8]};
   display: flex;
-  cursor: pointer;
 `;
 
 const Tag = styled(Field)``;
@@ -33,7 +35,7 @@ export default function TagsFilter({ submitHandler }) {
 
   return (
     <>
-      <p>tags filter</p>
+      <P>tags filter</P>
 
       <Formik
         initialValues={{ tags: [] }}
@@ -48,7 +50,7 @@ export default function TagsFilter({ submitHandler }) {
               <TagsList>
                 {tags.map((tag) => {
                   return (
-                    <TagLitItem key={tag.id}>
+                    <TagLitItem key={tag.id} as="li">
                       <label htmlFor={tag.id}>{tag.id}</label>
                       <Tag
                         type="checkbox"

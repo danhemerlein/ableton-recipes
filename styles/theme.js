@@ -6,6 +6,8 @@ const theme = {
     foreground: '#000000',
     anchor: '#000000',
     border: '#000000',
+    tagBackground: '#000000',
+    tagForeground: '#FFFFFF',
     general: generalScheme,
   },
 };

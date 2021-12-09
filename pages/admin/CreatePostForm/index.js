@@ -63,6 +63,7 @@ const CreatePostForm = ({ tags, authors }) => {
       title: formValues.title,
       link: formValues.link,
       published: formValues.published,
+      author,
       tags: formValues.tags,
       slug,
       createdAt: serverTimestamp(),

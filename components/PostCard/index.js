@@ -34,6 +34,8 @@ const Card = styled.li`
     ${({ index }) =>
       String(index) && `margin-left: ${getDesktopMarginLeft(String(index))};`}
   `};
+
+  margin-bottom: ${remHelper[8]};
 `;
 
 const TagsList = styled.ul`
@@ -43,7 +45,10 @@ const TagsList = styled.ul`
 `;
 
 const Tag = styled(P)`
-  border: 1px solid black;
+  border: 1px solid;
+  border-color: ${({ theme }) => theme.border};
+  background: ${({ theme }) => theme.tagBackground};
+  color: ${({ theme }) => theme.tagForeground};
   padding: ${remHelper[4]};
   border-radius: 25%;
   display: inline;
@@ -76,7 +81,9 @@ export function PostCard({ post, admin = false }) {
         </TagsList>
       </TagsContainer>
 
-      <span>💗 {post.heartCount || 0}</span>
+      <P>
+        <span>🖤 {post.heartCount || 0}</span>
+      </P>
 
       {admin && <Link href={`/admin/${post.slug}`}>Edit</Link>}
     </Card>

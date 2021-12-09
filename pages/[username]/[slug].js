@@ -1,6 +1,7 @@
 import { collectionGroup, doc, getDocs, query } from '@firebase/firestore';
 import { useState } from 'react';
-import PostContent from '../../components/PostContent';
+import PostPage from '../../components/PostPage';
+import { P, H2 } from 'styles/elements/typography';
 import {
   firestore,
   getPostByUserAndSlug,
@@ -58,7 +59,7 @@ const Post = ({ post, path }) => {
   return (
     <main>
       <section>
-        <PostContent post={UIpost} postDocumentRef={postDocumentRef} />
+        <PostPage post={UIpost} postDocumentRef={postDocumentRef} />
       </section>
     </main>
   );
