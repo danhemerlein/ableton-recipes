@@ -21,7 +21,7 @@ const NavBar = ({}) => {
     <StyledNav>
       <UL>
         <P as="li">
-          <Link href="/">feed</Link>
+          <Link href="/">ableton recipes</Link>
         </P>
 
         {/* user is signed in and has a username */}
@@ -42,7 +42,9 @@ const NavBar = ({}) => {
         {/* user is not signed in OR has not created a user name */}
         {!username && (
           <P as="li">
-            <Link href="/enter">log in</Link>
+            <Link href="/sign-in">log in</Link>
+            <span>&nbsp;/&nbsp;</span>
+            <Link href="/enter">sign up</Link>
           </P>
         )}
       </UL>

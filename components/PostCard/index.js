@@ -64,9 +64,7 @@ export function PostCard({ post, admin = false }) {
     <Card>
       {admin && <>{post.published ? <P>Live</P> : <P>Unpublished</P>}</>}
 
-      <Link href={`/${post.username}/${post.slug}`}>
-        <H2>{post.title}</H2>
-      </Link>
+      <H2>{post.title}</H2>
 
       <TagsContainer>
         <P>tags:</P>

@@ -38,6 +38,7 @@ const UserProfilePage = ({ user, posts }) => {
       <Metatags title="user profile page" />
 
       <UserProfile user={user} />
+
       <PostFeed posts={posts} />
     </main>
   );
