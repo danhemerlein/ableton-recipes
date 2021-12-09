@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import AuthCheck from '../../components/AuthCheck';
+import AdminCheck from '../../components/AdminCheck';
 import Metatags from '../../components/Metatags';
 
 import { getAllDocumentsInACollection } from '../../lib/firebase';
@@ -22,12 +22,12 @@ function CreateNewPost() {
 
 const CreatePost = () => {
   return (
-    <AuthCheck>
+    <AdminCheck>
       <main>
         <Metatags title="creating a new post" />
         <CreateNewPost />
       </main>
-    </AuthCheck>
+    </AdminCheck>
   );
 };
 

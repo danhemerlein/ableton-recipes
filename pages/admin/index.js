@@ -1,19 +1,20 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import AuthCheck from '../../components/AuthCheck';
+import AdminCheck from '../../components/AdminCheck';
 import Metatags from '../../components/Metatags';
 import PostFeed from '../../components/PostFeed';
 import TagsFilter from '../../components/TagsFilter';
 import { auth, getAdminPostsList } from '../../lib/firebase';
+import { H1, H2 } from 'styles/elements/typography';
 
 const AdminPostsPage = () => {
   return (
-    <AuthCheck>
+    <AdminCheck>
       <main>
         <Metatags title="admin page" />
         <PostList />
       </main>
-    </AuthCheck>
+    </AdminCheck>
   );
 };
 
@@ -28,12 +29,16 @@ function PostList() {
 
   return (
     <>
-      <h1>
+      <H1>Admin Panel</H1>
+
+      <H2>
         <Link href="/admin/create">Create New Post</Link>
-      </h1>
-      <h1>or</h1>
-      <h1>Manage your Posts</h1>
-      <TagsFilter />
+        or
+      </H2>
+      <H2>Manage your Posts</H2>
+
+      {/* <TagsFilter /> */}
+
       <PostFeed posts={posts} admin />
     </>
   );

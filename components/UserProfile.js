@@ -1,5 +1,8 @@
 import UserSettingsForm from 'components/UserSettingsForm';
+import { P } from 'styles/elements/typography';
 import { useState } from 'react';
+import { FlexContainer } from 'styles/elements/containers';
+import { SignOutButton } from '@pages/enter/SignOutButton';
 
 const UserProfile = ({ user }) => {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
@@ -7,16 +10,17 @@ const UserProfile = ({ user }) => {
     setShowUpdateForm(!showUpdateForm);
   };
   return (
-    <div className="box-center">
-      <img src={user.photoURL || '/hacker.png'} className="card-img-center" />
-      <p>
-        <i>@{user.username}</i>
-      </p>
-      <h1>{user.displayName || 'Anonymous User'}</h1>
-      <button onClick={toggleUpdateForm}>user settings</button>
+    <FlexContainer justify="center" items="center" direction="column">
+      <P>username: {user.username}</P>
+
+      <button onClick={toggleUpdateForm}>update user settings</button>
 
       {showUpdateForm && <UserSettingsForm username={user.username} />}
-    </div>
+
+      <SignOutButton />
+
+      <P>liked posts</P>
+    </FlexContainer>
   );
 };
 export default UserProfile;

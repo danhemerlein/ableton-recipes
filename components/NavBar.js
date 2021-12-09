@@ -28,13 +28,7 @@ const NavBar = ({}) => {
         {username && (
           <>
             <P as="li">
-              <Link href="/admin">view admin panel</Link>
-            </P>
-
-            <P as="li">
-              <Link href={`/${username}`}>
-                <img src={user?.photoURL} alt="" />
-              </Link>
+              <Link href={`/${username}`}>view profile</Link>
             </P>
           </>
         )}

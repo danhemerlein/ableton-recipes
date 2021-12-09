@@ -1,8 +1,34 @@
 import { doc, getDoc, writeBatch } from 'firebase/firestore';
 import _ from 'lodash';
+import { above } from 'styles/utilities';
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { FlexContainer } from 'styles/elements/containers';
 import { UserContext } from '../../lib/context';
 import { firestore } from '../../lib/firebase';
+import { P, H2 } from 'styles/elements/typography';
+import { remHelper } from 'lib/utilities/remHelper';
+import styled from 'styled-components';
+
+const Container = styled(FlexContainer)`
+  width: 100%;
+  margin: 0 auto;
+
+  ${above.tablet`
+    width: 50%;
+  `};
+`;
+
+const Label = styled(H2)`
+  margin-bottom: ${remHelper[8]};
+`;
+
+const StyledP = styled(P)`
+  margin: ${remHelper[8]} 0;
+`;
+
+const StyledButton = styled.button`
+  margin: ${remHelper[8]} 0;
+`;
 
 export function UserNameForm() {
   const [formValue, setFormValue] = useState('');
@@ -45,6 +71,7 @@ export function UserNameForm() {
       username: formValue,
       photoURL: user.photoURL,
       displayName: user.displayName,
+      admin: false,
     });
 
     batch.set(usernameDoc, { uid: user.uid });
@@ -72,42 +99,47 @@ export function UserNameForm() {
 
   function UsernameMessage({ username, isValid, loading }) {
     if (loading) {
-      return <p>Checking...</p>;
+      return <StyledP>Checking...</StyledP>;
     } else if (isValid) {
-      return <p>{username} is available!</p>;
+      return <StyledP>{username} is available!</StyledP>;
     } else if (username && !isValid) {
-      return <p>That username is taken!</p>;
+      return <StyledP>That username is taken or invalid</StyledP>;
     } else {
-      return <p></p>;
+      return null;
     }
   }
 
   return (
     !username && (
-      <section>
-        <h3>choose username</h3>
-        <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit}>
+        <Container direction="column">
+          <Label as="label" htmlFor="username">
+            choose username
+          </Label>
           <input
             name="username"
             type="text"
+            id="username"
             value={formValue}
             onChange={onChange}
           />
+
           <UsernameMessage
             username={formValue}
             isValid={isValid}
             loading={loading}
           />
 
-          <button type="submit" disabled={!isValid}>
+          <StyledButton type="submit" disabled={!isValid}>
             submit
-          </button>
-          <h3>debug state</h3>
-          <pre>form value: {JSON.stringify(formValue, null, 2)}</pre>
-          <pre>loading: {JSON.stringify(loading, null, 2)}</pre>
-          <pre>username is valid: {JSON.stringify(isValid, null, 2)}</pre>
-        </form>
-      </section>
+          </StyledButton>
+
+          {/* <h3>debug state</h3> */}
+          {/* <pre>form value: {JSON.stringify(formValue, null, 2)}</pre> */}
+          {/* <pre>loading: {JSON.stringify(loading, null, 2)}</pre> */}
+          {/* <pre>username is valid: {JSON.stringify(isValid, null, 2)}</pre> */}
+        </Container>
+      </form>
     )
   );
 }
