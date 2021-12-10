@@ -15,7 +15,7 @@ export const CenterContainer = styled(FlexContainer)`
   width: 100%;
   margin: 0 auto;
 
-  ${above.tablet`
-  width: 50%;
-`};
+  ${above.desktop`
+    width: 50%;
+  `};
 `;

@@ -11,7 +11,8 @@ import toast from 'react-hot-toast';
 import { auth, firestore } from 'lib/firebase';
 import { UserContext } from 'lib/context';
 import { useContext } from 'react';
-import { FlexContainer } from 'styles/elements/containers';
+import { FlexContainer, CenterContainer } from 'styles/elements/containers';
+import { P } from 'styles/elements/typography';
 import { remHelper } from 'lib/utilities/remHelper';
 import { doc } from '@firebase/firestore';
 import { serverTimestamp, addDoc, collection } from '@firebase/firestore';
@@ -43,6 +44,22 @@ const TagCheckbox = styled(Field)`
   width: ${remHelper[16]};
 `;
 
+const TextInputLabel = styled(P)`
+  margin: ${remHelper[8]} 0;
+`;
+
+const AuthorLabel = styled(P)`
+  margin-right: ${remHelper[8]};
+`;
+
+const StyledButton = styled.button`
+  margin: ${remHelper[8]} 0;
+`;
+
+const StyledPre = styled.pre`
+  font-size: 1.6rem;
+`;
+
 const CreatePostForm = ({ tags, authors }) => {
   const { username } = useContext(UserContext);
   const router = useRouter();
@@ -63,7 +80,7 @@ const CreatePostForm = ({ tags, authors }) => {
       title: formValues.title,
       link: formValues.link,
       published: formValues.published,
-      author,
+      author: formValues.author,
       tags: formValues.tags,
       slug,
       createdAt: serverTimestamp(),
@@ -77,81 +94,100 @@ const CreatePostForm = ({ tags, authors }) => {
   };
 
   return (
-    <Formik
-      initialValues={defaultValues}
-      validationSchema={schema[0]}
-      onSubmit={(values, { setSubmitting }) => {
-        createPost(values);
-        setSubmitting(false);
-        // Imperative navigation after doc is set
-        router.push(`/admin/${slug}`);
-      }}
-    >
-      {({ values, errors, touched, isSubmitting }) => {
-        console.log(values);
-        return (
-          <Form id={formId}>
-            <FormFieldContainer direction="column">
-              <label htmlFor="title">title</label>
-              <Field type="text" name="title" id="title" />
-              <ErrorMessage name="title" />
-            </FormFieldContainer>
+    <CenterContainer>
+      <Formik
+        initialValues={defaultValues}
+        validationSchema={schema[0]}
+        onSubmit={(values, { setSubmitting }) => {
+          createPost(values);
+          setSubmitting(false);
 
-            <FormFieldContainer direction="column">
-              <label htmlFor="link">link</label>
-              <Field type="text" name="link"></Field>
-              <ErrorMessage name="link" />
-            </FormFieldContainer>
+          resetForm();
+          // Imperative navigation after doc is set
+          router.push(`/admin/${slug}`);
+        }}
+      >
+        {({ values, errors, touched, isSubmitting }) => {
+          console.log(values);
+          return (
+            <Form id={formId}>
+              <FormFieldContainer direction="column">
+                <TextInputLabel as="label" htmlFor="title">
+                  title
+                </TextInputLabel>
+                <Field type="text" name="title" id="title" />
 
-            <label htmlFor="author">author</label>
+                <ErrorMessage name="title" />
+              </FormFieldContainer>
 
-            <Field as="select" name="author" id="author">
-              <option value="">- select an anthor -</option>
-              {authors.map((author) => {
-                return (
-                  <option value={author.name} key={author.name}>
-                    {author.name}
-                  </option>
-                );
-              })}
-            </Field>
+              <FormFieldContainer direction="column">
+                <TextInputLabel as="label" htmlFor="link">
+                  link
+                </TextInputLabel>
+                <Field type="text" name="link"></Field>
+                <ErrorMessage name="link" />
+              </FormFieldContainer>
 
-            <FormFieldContainer>
-              <TagsList>
-                {tags.map((tag) => {
+              <AuthorLabel as="label" htmlFor="author">
+                author:
+              </AuthorLabel>
+
+              <Field as="select" name="author" id="author">
+                <option value="">- select an anthor -</option>
+                {authors.map((author) => {
                   return (
-                    <TagLitItem key={tag.id}>
-                      <label htmlFor={tag.id}>{tag.id}</label>
-                      <TagCheckbox
-                        type="checkbox"
-                        name="tags"
-                        id={tag.id}
-                        value={tag.id}
-                      />
-                    </TagLitItem>
+                    <option value={author.name} key={author.name}>
+                      {author.name}
+                    </option>
                   );
                 })}
-              </TagsList>
-            </FormFieldContainer>
+              </Field>
 
-            <FormFieldContainer items="center" justify="center">
-              <label htmlFor="published">published</label>
+              <FormFieldContainer>
+                <FlexContainer items="center">
+                  <P>tags:</P>
+                  <TagsList>
+                    {tags.map((tag) => {
+                      return (
+                        <TagLitItem key={tag.id}>
+                          <P as="label" htmlFor={tag.id}>
+                            {tag.id}
+                          </P>
+                          <TagCheckbox
+                            type="checkbox"
+                            name="tags"
+                            id={tag.id}
+                            value={tag.id}
+                          />
+                        </TagLitItem>
+                      );
+                    })}
+                  </TagsList>
+                </FlexContainer>
+              </FormFieldContainer>
 
-              <Field type="checkbox" name="published" id="published" />
-            </FormFieldContainer>
+              <FormFieldContainer items="center" items="center">
+                <P as="label" htmlFor="published">
+                  published
+                </P>
 
-            <FormFieldContainer>
-              <p>
-                <strong>Slug:</strong> {encodeURI(_.kebabCase(values.title))}
-              </p>
-            </FormFieldContainer>
+                <Field type="checkbox" name="published" id="published" />
+              </FormFieldContainer>
 
-            <button type="submit">create new post</button>
-            <pre>{JSON.stringify(values, null, 2)}</pre>
-          </Form>
-        );
-      }}
-    </Formik>
+              <FormFieldContainer>
+                <P>
+                  <strong>Slug:</strong> {encodeURI(_.kebabCase(values.title))}
+                </P>
+              </FormFieldContainer>
+
+              <StyledButton type="submit">create new post</StyledButton>
+
+              <StyledPre>{JSON.stringify(values, null, 2)}</StyledPre>
+            </Form>
+          );
+        }}
+      </Formik>
+    </CenterContainer>
   );
 };
 export default CreatePostForm;
