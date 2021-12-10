@@ -5,20 +5,26 @@ import {
   updateDoc,
 } from '@firebase/firestore';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { useRouter } from 'next/router';
 import React from 'react';
 import toast from 'react-hot-toast';
-import ReactMarkdown from 'react-markdown';
+import { remHelper } from 'lib/utilities/remHelper';
+import { P, H2 } from 'styles/elements/typography';
 import styled from 'styled-components';
 import { formId } from './updatePostFormModel';
 import schema from './validationSchema';
-import { FlexContainer } from 'styles/elements/containers';
+import { CenterContainer, FlexContainer } from 'styles/elements/containers';
 
 const PostTitle = styled(Field)`
   width: 100%;
 `;
 
-const PostContentTextArea = styled(Field)`
-  width: 100%;
+const Headline = styled(H2)`
+  margin-bottom: ${remHelper[8]};
+`;
+
+const StyledP = styled(P)`
+  margin-bottom: ${remHelper[8]};
 `;
 
 const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
@@ -37,22 +43,28 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
     toast.success('post updated successfully!');
   };
 
+  const router = useRouter();
+
   const deletePost = async () => {
-    if (window.confirm('confirm you want to delete this post')) {
+    if (window.confirm('are you sure you want to delete this post?')) {
       await deleteDoc(postRef);
+
+      toast.success('post deleted successfully!');
+
+      router.push(`/admin`);
     }
   };
 
   return (
-    <>
-      <h3>update post form</h3>
+    <CenterContainer direction="column">
+      <Headline as="h3">update post form</Headline>
 
       {preview ? (
         <>
-          <p>you are previewing this post, select edit to make changes</p>
-          <div>
-            <ReactMarkdown>{defaultValues[0].title}</ReactMarkdown>
-          </div>
+          <StyledP>
+            you are previewing this post, select edit to make changes
+          </StyledP>
+          <StyledP>{defaultValues[0].title}</StyledP>
         </>
       ) : (
         <Formik
@@ -98,7 +110,7 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
       )}
 
       <button onClick={deletePost}>delete post</button>
-    </>
+    </CenterContainer>
   );
 };
 

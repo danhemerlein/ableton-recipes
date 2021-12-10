@@ -8,17 +8,8 @@ import { above } from 'styles/utilities';
 import { P } from 'styles/elements/typography';
 import { UserNameForm } from './UserNameForm';
 import styled from 'styled-components';
-import { FlexContainer } from 'styles/elements/containers';
+import { CenterContainer, FlexContainer } from 'styles/elements/containers';
 import { remHelper } from 'lib/utilities/remHelper';
-
-const Container = styled(FlexContainer)`
-  width: 100%;
-  margin: 0 auto;
-
-  ${above.tablet`
-    width: 50%;
-  `};
-`;
 
 const StyledP = styled(P)`
   margin: ${remHelper[8]} 0;
@@ -30,9 +21,6 @@ const SignInParagraph = styled(P)`
 
 const Enter = () => {
   const { user, username } = useContext(UserContext);
-
-  console.log(user.uid);
-
   return (
     <main>
       {user ? (
@@ -42,15 +30,18 @@ const Enter = () => {
           <SignOutButton />
         )
       ) : (
-        <Container direction="column">
+        <CenterContainer direction="column">
           <CreateUserWithEmailAndPassword />
+
           <SignInParagraph>
             already have an account?&nbsp;
             <Link href="sign-in">sign in</Link>
           </SignInParagraph>
+
           <StyledP>or</StyledP>
+
           <SignInWithGoogleButton />
-        </Container>
+        </CenterContainer>
       )}
     </main>
   );

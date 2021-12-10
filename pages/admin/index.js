@@ -18,10 +18,9 @@ const AdminPage = () => {
         <H1>Admin Panel</H1>
 
         <H2>
-          <Link href="/admin/create">Create New Post</Link>
-          or
+          <Link href="/admin/create">Create New Post &nbsp;</Link>
+          or Manage your Posts
         </H2>
-        <H2>Manage your Posts</H2>
 
         <PostList />
       </main>

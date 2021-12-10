@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { above } from 'styles/utilities';
 
 export const FlexContainer = styled.div`
   display: flex;
@@ -8,4 +9,13 @@ export const FlexContainer = styled.div`
   ${({ wrap }) => wrap && `flex-wrap: ${wrap}`};
   ${({ height }) => height && `height: ${height}`};
   ${({ width }) => width && `width: ${width}`};
+`;
+
+export const CenterContainer = styled(FlexContainer)`
+  width: 100%;
+  margin: 0 auto;
+
+  ${above.tablet`
+  width: 50%;
+`};
 `;

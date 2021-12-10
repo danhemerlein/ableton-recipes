@@ -59,6 +59,10 @@ const TagsContainer = styled(FlexContainer)`
   margin-top: ${remHelper[8]};
 `;
 
+const StyledP = styled(P)`
+  margin: ${remHelper[8]} 0;
+`;
+
 export function PostCard({ post, admin = false }) {
   return (
     <Card>
@@ -79,11 +83,15 @@ export function PostCard({ post, admin = false }) {
         </TagsList>
       </TagsContainer>
 
-      <P>
+      <StyledP>
         <span>🖤 {post.heartCount || 0}</span>
-      </P>
+      </StyledP>
 
-      {admin && <Link href={`/admin/${post.slug}`}>Edit</Link>}
+      {admin && (
+        <StyledP>
+          <Link href={`/admin/${post.slug}`}>Edit</Link>
+        </StyledP>
+      )}
     </Card>
   );
 }

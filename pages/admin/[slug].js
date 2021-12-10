@@ -1,10 +1,18 @@
 import { doc } from '@firebase/firestore';
 import Link from 'next/Link';
 import { useRouter } from 'next/router';
+import { P } from 'styles/elements/typography';
 import { useEffect, useState } from 'react';
+import { CenterContainer } from 'styles/elements/containers';
 import AuthCheck from '../../components/AuthCheck';
 import { auth, firestore, getPostByUserAndSlug } from '../../lib/firebase';
 import UpdatePostForm from './UpdatePostForm';
+import styled from 'styled-components';
+import { remHelper } from 'lib/utilities/remHelper';
+
+const MarginHelper = styled.div`
+  margin: ${remHelper[8]} 0;
+`;
 
 const AdminSlug = () => {
   return (
@@ -54,14 +62,19 @@ function PostManager() {
             />
           </section>
 
-          <aside>
-            <button onClick={() => setPreview(!preview)}>
-              {preview ? 'Edit' : 'Preview'}
-            </button>
-            <Link href={`/${post.username}/${post.slug}`}>
-              <button className="btn-blue">Live view</button>
-            </Link>
-          </aside>
+          <CenterContainer direction="column">
+            <MarginHelper>
+              <button onClick={() => setPreview(!preview)}>
+                {preview ? 'Edit' : 'Preview'}
+              </button>
+            </MarginHelper>
+
+            <MarginHelper>
+              <P>
+                <Link href={`/${post.username}/${post.slug}`}>Live view</Link>
+              </P>
+            </MarginHelper>
+          </CenterContainer>
         </>
       )}
     </main>
