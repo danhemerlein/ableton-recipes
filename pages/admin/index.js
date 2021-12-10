@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import AdminCheck from '../../components/AdminCheck';
 import Metatags from '../../components/Metatags';
 import PostFeed from '../../components/PostFeed';
-import TagsFilter from '../../components/TagsFilter';
 import { auth, getAdminPostsList } from '../../lib/firebase';
 import { H1, H2 } from 'styles/elements/typography';
 
