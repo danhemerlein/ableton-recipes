@@ -13,8 +13,6 @@ const PostFeed = ({ posts, admin }) => {
     return null;
   }
 
-  console.log(posts);
-
   return (
     <Feed>
       {posts.map((post) => (

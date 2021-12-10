@@ -28,8 +28,10 @@ const SignInParagraph = styled(P)`
   margin-top: ${remHelper[8]};
 `;
 
-const Enter = ({}) => {
+const Enter = () => {
   const { user, username } = useContext(UserContext);
+
+  console.log(user.uid);
 
   return (
     <main>
