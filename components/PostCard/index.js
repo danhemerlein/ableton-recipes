@@ -4,7 +4,19 @@ import styled from 'styled-components';
 import { FlexContainer } from 'styles/elements/containers';
 import LikeButton from '@components/LikeButton';
 import { H2, P } from 'styles/elements/typography';
+
 import { useEffect, useState } from 'react';
+import {
+  collectionGroup,
+  getDocs,
+  query,
+  where,
+  doc,
+  collection,
+  getDoc,
+  onSnapshot,
+} from '@firebase/firestore';
+import { firestore } from 'lib/firebase';
 import { above } from 'styles/utilities';
 import {
   getDesktopMarginLeft,
@@ -75,9 +87,17 @@ const Title = styled(H2)`
 
 export function PostCard({ post, admin }) {
   const [createdAt, setCreatedAt] = useState({});
+  const [UIHeartCount, setUIHeartCount] = useState(post.heartCount);
 
-  useEffect(() => {
+  useEffect(async () => {
+    const userRef = doc(firestore, 'users', post.uid);
+
     setCreatedAt(buildDate(new Date(post.createdAt)));
+
+    const unsub = onSnapshot(doc(userRef, 'posts', post.id), (doc) => {
+      console.log(doc.data());
+      setUIHeartCount(doc.data().heartCount);
+    });
   }, []);
 
   return (
@@ -112,7 +132,7 @@ export function PostCard({ post, admin }) {
 
       <FlexContainer>
         <StyledP>
-          <span>🖤 {post.heartCount || 0}</span>
+          <span>🖤 {UIHeartCount || 0}</span>
         </StyledP>
 
         <AuthCheck>

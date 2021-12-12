@@ -2,9 +2,8 @@ import {
   doc,
   getDoc,
   collectionGroup,
+  onSnapshot,
   getDocs,
-  update,
-  set,
   query,
   where,
   increment,
@@ -17,7 +16,6 @@ import { UserContext } from 'lib/context';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { remHelper } from 'lib/utilities/remHelper';
-import AuthCheck from './AuthCheck';
 import toast from 'react-hot-toast';
 
 const StyledButton = styled.button`
@@ -39,6 +37,7 @@ function LikeButton({ postSlug }) {
     const querySnapshot = await getDocs(collectionGroupQuery);
 
     const postRef = querySnapshot.docs[0].ref;
+
     setUIPostRef(postRef);
 
     const heartDocumentRef = doc(postRef, 'hearts', user.uid);
@@ -48,9 +47,11 @@ function LikeButton({ postSlug }) {
     const heartDocumentSnap = await getDoc(heartDocumentRef);
     const exists = heartDocumentSnap.exists();
 
-    setLiked(exists);
+    const unsub = onSnapshot(doc(postRef, 'hearts', user.uid), (doc) => {
+      setLiked(doc.data() !== undefined);
+    });
 
-    console.log(exists);
+    setLiked(exists);
   }, [liked]);
 
   const addLike = async () => {
