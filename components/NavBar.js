@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useContext } from 'react';
-import { UserContext } from '../lib/context';
+import { UserContext } from 'lib/context';
 import styled from 'styled-components';
 import { remHelper } from 'lib/utilities/remHelper';
 import { P } from 'styles/elements/typography';

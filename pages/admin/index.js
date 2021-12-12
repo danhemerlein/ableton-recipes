@@ -5,7 +5,7 @@ import { UserContext } from 'lib/context';
 import { useContext } from 'react';
 import Metatags from 'components/Metatags';
 import PostFeed from 'components/PostFeed';
-import { auth, getAdminPostsList } from 'lib/firebase';
+import { getAdminPostsList } from 'lib/firebase';
 
 import { H1, H2 } from 'styles/elements/typography';
 

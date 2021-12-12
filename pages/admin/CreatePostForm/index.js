@@ -1,21 +1,29 @@
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  serverTimestamp,
+  query,
+  collectionGroup,
+  where,
+} from '@firebase/firestore';
 
-import { useRouter } from 'next/dist/client/router';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { UserContext } from 'lib/context';
+import { auth, firestore, docToJSON } from 'lib/firebase';
+import { remHelper } from 'lib/utilities/remHelper';
 import _ from 'lodash';
+import { useRouter } from 'next/dist/client/router';
+import { useCallback, useContext, useState } from 'react';
+import toast from 'react-hot-toast';
 import styled from 'styled-components';
+import { CenterContainer, FlexContainer } from 'styles/elements/containers';
+import { P } from 'styles/elements/typography';
 import { formId } from './createPostFormModel';
 import defaultValues from './defaultValues';
 import schema from './validationSchema';
-import toast from 'react-hot-toast';
-
-import { auth, firestore } from 'lib/firebase';
-import { UserContext } from 'lib/context';
-import { useContext } from 'react';
-import { FlexContainer, CenterContainer } from 'styles/elements/containers';
-import { P } from 'styles/elements/typography';
-import { remHelper } from 'lib/utilities/remHelper';
-import { doc } from '@firebase/firestore';
-import { serverTimestamp, addDoc, collection } from '@firebase/firestore';
 
 const FormFieldContainer = styled(FlexContainer)`
   margin: ${remHelper[16]} 0;
@@ -26,6 +34,7 @@ const TagsList = styled.ul`
   padding: 0;
   list-style: none;
   display: flex;
+  flex-wrap: wrap;
 `;
 
 const TagLitItem = styled.li`
@@ -60,9 +69,41 @@ const StyledPre = styled.pre`
   font-size: 1.6rem;
 `;
 
+const StyledForm = styled(Form)`
+  width: 100%;
+`;
+
 const CreatePostForm = ({ tags, authors }) => {
   const { username } = useContext(UserContext);
   const router = useRouter();
+  const [slugIsValid, setSlugIsValid] = useState(true);
+  const [slugLoading, setSlugLoading] = useState(false);
+
+  // Hit the database for slug match after each debounced change
+  // useCallback is required for debounce to work
+
+  const checkSlug = useCallback(
+    _.debounce(async (title) => {
+      setSlugLoading(true);
+
+      const collectionGroupQuery = query(
+        collectionGroup(firestore, 'posts'),
+        where('slug', '==', encodeURI(_.kebabCase(title)))
+      );
+
+      const querySnapshot = await getDocs(collectionGroupQuery);
+
+      const posts = querySnapshot.docs.map(docToJSON);
+
+      if (posts.length) {
+        setSlugIsValid(false);
+      } else {
+        setSlugIsValid(true);
+      }
+      setSlugLoading(false);
+    }, 250),
+    []
+  );
 
   // Create a new post in firestore
   const createPost = async (formValues) => {
@@ -71,7 +112,7 @@ const CreatePostForm = ({ tags, authors }) => {
     const userRef = doc(firestore, 'users', uid);
 
     // ensure slug is URL safe
-    const slug = encodeURI(_.kebabCase(title));
+    const slug = encodeURI(_.kebabCase(formValues.title));
 
     // Tip: give all fields a default value here
     const data = {
@@ -88,9 +129,14 @@ const CreatePostForm = ({ tags, authors }) => {
       heartCount: 0,
     };
 
-    await addDoc(collection(userRef, 'posts'), data);
-
-    toast.success('Post created!');
+    if (slugIsValid) {
+      await addDoc(collection(userRef, 'posts'), data);
+      toast.success('Post created!');
+    } else {
+      toast.error(
+        'a post with that title and slug already exist - please edit the title'
+      );
+    }
   };
 
   return (
@@ -98,33 +144,68 @@ const CreatePostForm = ({ tags, authors }) => {
       <Formik
         initialValues={defaultValues}
         validationSchema={schema[0]}
-        onSubmit={(values, { setSubmitting }) => {
+        onSubmit={(values, { setSubmitting, resetForm }) => {
           createPost(values);
           setSubmitting(false);
 
-          resetForm();
+          resetForm({ values: { ...defaultValues } });
+
           // Imperative navigation after doc is set
           router.push(`/admin/${slug}`);
         }}
       >
-        {({ values, errors, touched, isSubmitting }) => {
-          console.log(values);
+        {({
+          values,
+          errors,
+          touched,
+          isSubmitting,
+          setFieldTouched,
+          setFieldValue,
+        }) => {
+          const setTitleValue = (titleString) => {
+            setFieldTouched('title', true, false);
+            checkSlug(titleString);
+
+            return setFieldValue('title', titleString);
+          };
+
+          const titleChangeHandler = (e) => {
+            e.preventDefault();
+            setTitleValue(e.target.value);
+          };
+
           return (
-            <Form id={formId}>
+            <StyledForm id={formId}>
               <FormFieldContainer direction="column">
                 <TextInputLabel as="label" htmlFor="title">
                   title
                 </TextInputLabel>
-                <Field type="text" name="title" id="title" />
+
+                <Field
+                  type="text"
+                  name="title"
+                  id="title"
+                  value={values.title}
+                  onChange={titleChangeHandler}
+                />
 
                 <ErrorMessage name="title" />
+              </FormFieldContainer>
+
+              <FormFieldContainer>
+                <P>
+                  Slug:{' '}
+                  {slugLoading
+                    ? 'loading...'
+                    : encodeURI(_.kebabCase(values.title))}
+                </P>
               </FormFieldContainer>
 
               <FormFieldContainer direction="column">
                 <TextInputLabel as="label" htmlFor="link">
                   link
                 </TextInputLabel>
-                <Field type="text" name="link"></Field>
+                <Field type="text" name="link" value={values.link}></Field>
                 <ErrorMessage name="link" />
               </FormFieldContainer>
 
@@ -174,16 +255,10 @@ const CreatePostForm = ({ tags, authors }) => {
                 <Field type="checkbox" name="published" id="published" />
               </FormFieldContainer>
 
-              <FormFieldContainer>
-                <P>
-                  <strong>Slug:</strong> {encodeURI(_.kebabCase(values.title))}
-                </P>
-              </FormFieldContainer>
-
               <StyledButton type="submit">create new post</StyledButton>
 
               <StyledPre>{JSON.stringify(values, null, 2)}</StyledPre>
-            </Form>
+            </StyledForm>
           );
         }}
       </Formik>

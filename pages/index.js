@@ -77,6 +77,7 @@ export default function Home(props) {
       <Metatags title="fireship next" />
 
       <TagsFilter submitHandler={filterPostsByTag} />
+
       <PostFeed posts={posts} />
 
       {!loading && !postsEnd && (

@@ -1,20 +1,19 @@
+import { remHelper } from 'lib/utilities/remHelper';
 import Link from 'next/link';
-import { doc } from '@firebase/firestore';
-import { useEffect, useState } from 'react';
-import { auth, firestore, getPostByUserAndSlug } from 'lib/firebase';
 import styled from 'styled-components';
+import { FlexContainer } from 'styles/elements/containers';
+import LikeButton from '@components/LikeButton';
+import { H2, P } from 'styles/elements/typography';
+import { useEffect, useState } from 'react';
+import { above } from 'styles/utilities';
 import {
   getDesktopMarginLeft,
   getDestkopMarginRight,
   getTabletMarginLeft,
   getTabletMarginRight,
+  buildDate,
 } from './lib';
-import { P, H2 } from 'styles/elements/typography';
-import { FlexContainer } from 'styles/elements/containers';
-import { remHelper } from 'lib/utilities/remHelper';
-import { above } from 'styles/utilities';
-
-import LikeButton from 'components/LikeButton';
+import AuthCheck from '@components/AuthCheck';
 
 const Card = styled.li`
   width: 100%;
@@ -70,17 +69,15 @@ const StyledP = styled(P)`
 
 const Title = styled(H2)`
   margin: ${remHelper[8]} 0;
+  display: flex;
+  justify-content: space-between;
 `;
 
 export function PostCard({ post, admin }) {
-  const [postRef, setPostRef] = useState(null);
+  const [createdAt, setCreatedAt] = useState({});
 
-  const { slug } = post;
-
-  useEffect(async () => {
-    const { refData } = await getPostByUserAndSlug(userRef, slug);
-
-    setPostRef(refData);
+  useEffect(() => {
+    setCreatedAt(buildDate(new Date(post.createdAt)));
   }, []);
 
   return (
@@ -91,6 +88,11 @@ export function PostCard({ post, admin }) {
         <a href={post.link} target="_blank">
           {post.title}
         </a>
+
+        <StyledP as="span">
+          added&nbsp;{createdAt.month}&nbsp;{createdAt.dayNumber}&nbsp;
+          {createdAt.year}
+        </StyledP>
       </Title>
 
       <StyledP>author: {post.author}</StyledP>
@@ -113,7 +115,9 @@ export function PostCard({ post, admin }) {
           <span>🖤 {post.heartCount || 0}</span>
         </StyledP>
 
-        <LikeButton postDocRef={postRef} />
+        <AuthCheck>
+          <LikeButton postSlug={post.slug} />
+        </AuthCheck>
       </FlexContainer>
 
       {admin && (
