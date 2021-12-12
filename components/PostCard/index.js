@@ -6,16 +6,7 @@ import LikeButton from '@components/LikeButton';
 import { H2, P } from 'styles/elements/typography';
 
 import { useEffect, useState } from 'react';
-import {
-  collectionGroup,
-  getDocs,
-  query,
-  where,
-  doc,
-  collection,
-  getDoc,
-  onSnapshot,
-} from '@firebase/firestore';
+import { doc, onSnapshot } from '@firebase/firestore';
 import { firestore } from 'lib/firebase';
 import { above } from 'styles/utilities';
 import {
@@ -90,12 +81,9 @@ export function PostCard({ post, admin }) {
   const [UIHeartCount, setUIHeartCount] = useState(post.heartCount);
 
   useEffect(async () => {
-    const userRef = doc(firestore, 'users', post.uid);
-
     setCreatedAt(buildDate(new Date(post.createdAt)));
 
-    const unsub = onSnapshot(doc(userRef, 'posts', post.id), (doc) => {
-      console.log(doc.data());
+    const unsub = onSnapshot(doc(firestore, 'posts', post.id), (doc) => {
       setUIHeartCount(doc.data().heartCount);
     });
   }, []);
@@ -136,7 +124,7 @@ export function PostCard({ post, admin }) {
         </StyledP>
 
         <AuthCheck>
-          <LikeButton postSlug={post.slug} />
+          <LikeButton postID={post.id} />
         </AuthCheck>
       </FlexContainer>
 

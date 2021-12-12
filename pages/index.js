@@ -3,6 +3,7 @@ import {
   getDocs,
   limit,
   orderBy,
+  collection,
   query,
   startAfter,
   Timestamp,
@@ -20,14 +21,14 @@ const LIMIT = 10;
 export async function getServerSideProps() {
   let posts;
   // gets all sub collecitions since posts are attached to users
-  const collectionGroupQuery = query(
-    collectionGroup(firestore, 'posts'),
+  const collectionQuery = query(
+    collection(firestore, 'posts'),
     where('published', '==', true),
     orderBy('createdAt', 'desc'),
     limit(LIMIT)
   );
 
-  const querySnapshot = await getDocs(collectionGroupQuery);
+  const querySnapshot = await getDocs(collectionQuery);
 
   posts = querySnapshot.docs.map(docToJSON);
 

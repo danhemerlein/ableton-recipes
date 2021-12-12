@@ -3,6 +3,7 @@ import {
   collection,
   doc,
   getDocs,
+  updateDoc,
   serverTimestamp,
   query,
   collectionGroup,
@@ -108,15 +109,13 @@ const CreatePostForm = ({ tags, authors }) => {
   const createPost = async (formValues) => {
     const uid = auth.currentUser.uid;
 
-    const userRef = doc(firestore, 'users', uid);
-
     // ensure slug is URL safe
     const slug = encodeURI(_.kebabCase(formValues.title));
 
     // Tip: give all fields a default value here
     const data = {
       username,
-      uid,
+      userID: uid,
       title: formValues.title,
       link: formValues.link,
       published: formValues.published,
@@ -129,7 +128,11 @@ const CreatePostForm = ({ tags, authors }) => {
     };
 
     if (slugIsValid) {
-      await addDoc(collection(userRef, 'posts'), data);
+      const newPost = await addDoc(collection(firestore, 'posts'), data);
+      const fileID = newPost.id;
+      const postDocID = await updateDoc(doc(firestore, 'posts', fileID), {
+        id: fileID,
+      });
       toast.success('Post created!');
     } else {
       toast.error(

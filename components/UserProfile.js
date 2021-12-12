@@ -1,43 +1,14 @@
 import UserSettingsForm from 'components/UserSettingsForm';
 import { P } from 'styles/elements/typography';
-import { useEffect, useState, useContext } from 'react';
+import { useState } from 'react';
+import PostFeed from './PostFeed';
 
 import { FlexContainer } from 'styles/elements/containers';
-import { UserContext } from 'lib/context';
+
 import { SignOutButton } from '@pages/enter/SignOutButton';
-import { auth, firestore, docToJSON } from 'lib/firebase';
-import {
-  collectionGroup,
-  getDocs,
-  limit,
-  orderBy,
-  query,
-  startAfter,
-  Timestamp,
-  where,
-} from '@firebase/firestore';
 
-const UserProfile = ({ user, posts }) => {
+const UserProfile = ({ user, likedPosts }) => {
   const [showUpdateForm, setShowUpdateForm] = useState(false);
-
-  const uid = auth.currentUser.uid;
-
-  useEffect(async () => {
-    let posts;
-
-    console.log(uid);
-
-    const collectionGroupQuery = query(
-      collectionGroup(firestore, 'hearts'),
-      where('uid', '==', uid)
-    );
-
-    const querySnapshot = await getDocs(collectionGroupQuery);
-
-    posts = querySnapshot.docs.map(docToJSON);
-
-    console.log(posts);
-  }, []);
 
   const toggleUpdateForm = () => {
     setShowUpdateForm(!showUpdateForm);
@@ -54,6 +25,8 @@ const UserProfile = ({ user, posts }) => {
       <SignOutButton />
 
       <P>liked posts</P>
+
+      <PostFeed posts={likedPosts}></PostFeed>
     </FlexContainer>
   );
 };

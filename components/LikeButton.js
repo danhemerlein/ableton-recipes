@@ -1,16 +1,17 @@
 import {
   doc,
-  getDoc,
-  collectionGroup,
+  deleteDoc,
+  updateDoc,
+  collection,
   onSnapshot,
   getDocs,
   query,
   where,
+  setDoc,
   increment,
-  writeBatch,
 } from '@firebase/firestore';
 
-import { firestore } from 'lib/firebase';
+import { firestore, docToJSON } from 'lib/firebase';
 import { useContext } from 'react';
 import { UserContext } from 'lib/context';
 import { useEffect, useState } from 'react';
@@ -22,63 +23,62 @@ const StyledButton = styled.button`
   margin-left: ${remHelper[8]};
 `;
 
-function LikeButton({ postSlug }) {
-  const [UIPostRef, setUIPostRef] = useState(null);
-  const [UIHeartRef, setUIHeartRef] = useState(null);
+function LikeButton({ postID }) {
   const [liked, setLiked] = useState(false);
   const { user } = useContext(UserContext);
 
+  const heartReference = doc(firestore, 'hearts', `${user.uid}-${postID}`);
+
   useEffect(async () => {
-    const collectionGroupQuery = query(
-      collectionGroup(firestore, 'posts'),
-      where('slug', '==', postSlug)
+    // see if the user has like this post or not
+    const heartCollectionQuery = query(
+      collection(firestore, 'hearts'),
+      where('userID', '==', user.uid),
+      where('postID', '==', postID)
     );
 
-    const querySnapshot = await getDocs(collectionGroupQuery);
+    const querySnapshot = await getDocs(heartCollectionQuery);
 
-    const postRef = querySnapshot.docs[0].ref;
+    const hearts = querySnapshot.docs.map(docToJSON);
 
-    setUIPostRef(postRef);
-
-    const heartDocumentRef = doc(postRef, 'hearts', user.uid);
-
-    setUIHeartRef(heartDocumentRef);
-
-    const heartDocumentSnap = await getDoc(heartDocumentRef);
-    const exists = heartDocumentSnap.exists();
-
-    const unsub = onSnapshot(doc(postRef, 'hearts', user.uid), (doc) => {
-      setLiked(doc.data() !== undefined);
+    const unsub = onSnapshot(heartReference, (doc) => {
+      if (doc.data() !== undefined) {
+        setLiked(true);
+      } else {
+        setLiked(false);
+      }
     });
 
-    setLiked(exists);
-  }, [liked]);
-
-
-user id gp1UdtXnjrRplKs8YBOlB1Hbbkj1
-
-post id 5ivM07RpAGuXhLO3mnBA
+    setLiked(hearts.length);
+  }, []);
 
   const addLike = async () => {
-    const batch = writeBatch(firestore);
-    batch.update(UIPostRef, { heartCount: increment(1) });
-    batch.set(UIHeartRef, { uid: user.uid });
-    await batch.commit();
-    toast.success('post liked sucessfuly nice!');
+    await setDoc(heartReference, {
+      postID,
+      userID: user.uid,
+    });
+
+    await updateDoc(doc(firestore, 'posts', postID), {
+      heartCount: increment(1),
+    });
+
+    toast.success('post liked successfully!');
   };
 
   const removeLike = async () => {
-    const batch = writeBatch(firestore);
-    batch.update(UIPostRef, { heartCount: increment(-1) });
-    batch.delete(UIHeartRef);
-    await batch.commit();
-    toast.success('post un-liked nice!');
+    await deleteDoc(heartReference);
+
+    await updateDoc(doc(firestore, 'posts', postID), {
+      heartCount: increment(-1),
+    });
+
+    toast.success('post unliked successfully!');
   };
 
   return !liked ? (
-    <StyledButton onClick={addLike}>add like!</StyledButton>
+    <StyledButton onClick={addLike}>like</StyledButton>
   ) : (
-    <StyledButton onClick={removeLike}>remove like!</StyledButton>
+    <StyledButton onClick={removeLike}>dislike</StyledButton>
   );
 }
 

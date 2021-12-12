@@ -3,7 +3,7 @@ import Metatags from 'components/Metatags';
 import PostFeed from 'components/PostFeed';
 import UserProfile from 'components/UserProfile';
 import AuthCheck from '@components/AuthCheck';
-import { getPostsByUser, getUserWithUsername } from 'lib/firebase';
+import { getLikedPostsByUser, getUserWithUsername } from 'lib/firebase';
 
 export async function getServerSideProps({ query }) {
   const { username } = query;
@@ -20,29 +20,27 @@ export async function getServerSideProps({ query }) {
 
   // JSON serializable data
   let user = null;
-  let posts = null;
+  let likedPosts = null;
 
   if (userDocRef) {
     user = userDocSnap.data();
-    posts = await getPostsByUser(userDocRef);
+    likedPosts = await getLikedPostsByUser(userDocSnap.id);
   }
 
   return {
     // will be pased to the page componet as props
-    props: { user, posts, username },
+    props: { user, likedPosts },
   };
 }
 
-const UserProfilePage = ({ user, posts }) => {
+const UserProfilePage = ({ user, likedPosts }) => {
   return (
     <main>
       <Metatags title="user profile page" />
 
       <AuthCheck>
-        <UserProfile user={user} />
+        <UserProfile user={user} likedPosts={likedPosts} />
       </AuthCheck>
-
-      {/* <PostFeed posts={posts} /> */}
     </main>
   );
 };
