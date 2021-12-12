@@ -33,21 +33,12 @@ function PostManager() {
   const { slug } = router.query;
 
   useEffect(async () => {
-    // turn off realtime subscription
-    // let unsubscribe;
-
     const userRef = doc(firestore, 'users', auth.currentUser.uid);
 
     const { postData, refData } = await getPostByUserAndSlug(userRef, slug);
 
     setPost(postData);
     setPostRef(refData);
-
-    // unsubscribe = onSnapshot(refData, (doc) => {
-    //   setPost(doc.data());
-    // });
-
-    // return unsubscribe;
   }, []);
 
   return (

@@ -1,8 +1,5 @@
 import { PostCard } from './PostCard';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
-import { collectionGroup, getDocs, query, where } from '@firebase/firestore';
-import { firestore } from 'lib/firebase';
 
 import { remHelper } from 'lib/utilities/remHelper';
 

@@ -54,6 +54,11 @@ function LikeButton({ postSlug }) {
     setLiked(exists);
   }, [liked]);
 
+
+user id gp1UdtXnjrRplKs8YBOlB1Hbbkj1
+
+post id 5ivM07RpAGuXhLO3mnBA
+
   const addLike = async () => {
     const batch = writeBatch(firestore);
     batch.update(UIPostRef, { heartCount: increment(1) });

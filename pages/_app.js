@@ -2,10 +2,7 @@ import { Toaster } from 'react-hot-toast';
 import NavBar from 'components/NavBar';
 import { UserContext } from 'lib/context';
 import { useUserData } from 'lib/hooks';
-// import '../styles/globals.css';
 import GlobalReset from 'styles/global';
-
-// import GlobalFonts from './styles/utilities/type';
 import styled, { ThemeProvider } from 'styled-components';
 import { ThemeContextProvider } from 'lib/context';
 import { remHelper } from 'lib/utilities/remHelper';

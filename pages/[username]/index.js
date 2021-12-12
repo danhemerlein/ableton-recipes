@@ -1,8 +1,9 @@
 import { getDoc } from 'firebase/firestore';
-import Metatags from '../../components/Metatags';
-import PostFeed from '../../components/PostFeed';
-import UserProfile from '../../components/UserProfile';
-import { getPostsByUser, getUserWithUsername } from '../../lib/firebase';
+import Metatags from 'components/Metatags';
+import PostFeed from 'components/PostFeed';
+import UserProfile from 'components/UserProfile';
+import AuthCheck from '@components/AuthCheck';
+import { getPostsByUser, getUserWithUsername } from 'lib/firebase';
 
 export async function getServerSideProps({ query }) {
   const { username } = query;
@@ -37,9 +38,11 @@ const UserProfilePage = ({ user, posts }) => {
     <main>
       <Metatags title="user profile page" />
 
-      <UserProfile user={user} />
+      <AuthCheck>
+        <UserProfile user={user} />
+      </AuthCheck>
 
-      <PostFeed posts={posts} />
+      {/* <PostFeed posts={posts} /> */}
     </main>
   );
 };
