@@ -30,7 +30,7 @@ const FormFieldContainer = styled(FlexContainer)`
 `;
 
 const TagsList = styled.ul`
-  margin: 0 0 10px 0;
+  margin: 0 0 ${remHelper[8]} 0;
   padding: 0;
   list-style: none;
   display: flex;
@@ -38,11 +38,12 @@ const TagsList = styled.ul`
 `;
 
 const TagLitItem = styled.li`
-  border: 1px solid black;
-  padding: 10px;
+  border: ${({ theme }) => theme.border};
+
+  padding: ${remHelper[8]};
   border-radius: 25%;
   display: inline;
-  margin: 0 10px;
+  margin: 0 ${remHelper[8]};
   width: 20%;
   display: flex;
   cursor: pointer;

@@ -18,8 +18,9 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { remHelper } from 'lib/utilities/remHelper';
 import toast from 'react-hot-toast';
+import Button from 'components/Button';
 
-const StyledButton = styled.button`
+const StyledButton = styled(Button)`
   margin-left: ${remHelper[8]};
 `;
 
@@ -76,9 +77,13 @@ function LikeButton({ postID }) {
   };
 
   return !liked ? (
-    <StyledButton onClick={addLike}>like</StyledButton>
+    <StyledButton mode="primary" CTA={''} onClick={addLike}></StyledButton>
   ) : (
-    <StyledButton onClick={removeLike}>dislike</StyledButton>
+    <StyledButton
+      mode="primary"
+      CTA="dislike"
+      onClick={removeLike}
+    ></StyledButton>
   );
 }
 

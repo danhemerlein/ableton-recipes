@@ -1,6 +1,5 @@
 import { getDoc } from 'firebase/firestore';
 import Metatags from 'components/Metatags';
-import PostFeed from 'components/PostFeed';
 import UserProfile from 'components/UserProfile';
 import AuthCheck from '@components/AuthCheck';
 import { getLikedPostsByUser, getUserWithUsername } from 'lib/firebase';

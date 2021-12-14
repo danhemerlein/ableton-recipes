@@ -21,8 +21,7 @@ import AuthCheck from '@components/AuthCheck';
 const Card = styled.li`
   width: 100%;
 
-  border: 1px solid;
-  border-color: ${({ theme }) => theme.border};
+  border: ${({ theme }) => theme.border};
   padding: ${remHelper[8]};
 
   ${above.tablet`
@@ -52,13 +51,12 @@ const TagsList = styled.ul`
 `;
 
 const Tag = styled(P)`
-  border: 1px solid;
-  border-color: ${({ theme }) => theme.border};
+  border: ${({ theme }) => theme.border};
   background: ${({ theme }) => theme.tagBackground};
   color: ${({ theme }) => theme.tagForeground};
   padding: ${remHelper[4]};
   margin: 0 ${remHelper[8]};
-  border-radius: 25%;
+  border-radius: 100%;
   display: inline;
 `;
 

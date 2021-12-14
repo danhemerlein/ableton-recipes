@@ -10,13 +10,20 @@ import {
   where,
 } from '@firebase/firestore';
 import { useState } from 'react';
-import Loader from '../components/Loader';
-import Metatags from '../components/Metatags';
-import PostFeed from '../components/PostFeed';
-import TagsFilter from '../components/TagsFilter';
-import { docToJSON, firestore, getPostsByTags } from '../lib/firebase';
+import Loader from 'components/Loader';
+import Metatags from 'components/Metatags';
+import PostFeed from 'components/PostFeed';
+import TagsFilter from 'components/TagsFilter';
+import { docToJSON, firestore, getPostsByTags } from 'lib/firebase';
+import Button from 'components/Button';
+import styled from 'styled-components';
+import { remHelper } from 'lib/utilities/remHelper';
 
 const LIMIT = 10;
+
+const StyledButton = styled(Button)`
+  margin-top: ${remHelper[8]};
+`;
 
 export async function getServerSideProps() {
   let posts;
@@ -82,7 +89,11 @@ export default function Home(props) {
       <PostFeed posts={posts} />
 
       {!loading && !postsEnd && (
-        <button onClick={getMorePosts}>load more posts</button>
+        <StyledButton
+          CTA="load more posts"
+          onClick={getMorePosts}
+          mode="primary"
+        ></StyledButton>
       )}
 
       <Loader show={loading} />

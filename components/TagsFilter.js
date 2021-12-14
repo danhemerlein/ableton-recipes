@@ -4,23 +4,29 @@ import styled from 'styled-components';
 import { getAllDocumentsInACollection } from '../lib/firebase';
 import { P } from 'styles/elements/typography';
 import { remHelper } from 'lib/utilities/remHelper';
+import Button from 'components/Button';
 
 const TagsList = styled.ul`
-  margin: ${remHelper[8]} 0 ${remHelper[8]} 0;
   padding: 0;
   list-style: none;
   display: flex;
+  flex-wrap: wrap;
 `;
 
 const TagLitItem = styled(P)`
   cursor: pointer;
-
-  border: 1px solid black;
+  border: ${({ theme }) => theme.border};
   padding: ${remHelper[8]};
-  border-radius: 25%;
+
   display: inline;
-  margin: 0 ${remHelper[8]};
+  margin-top: ${remHelper[8]};
+  margin-right: ${remHelper[8]};
+  margin-left: ${remHelper[8]};
   display: flex;
+`;
+
+const StyledButton = styled(Button)`
+  margin-top: ${remHelper[8]};
 `;
 
 const Tag = styled(Field)``;
@@ -63,7 +69,11 @@ export default function TagsFilter({ submitHandler }) {
                 })}
               </TagsList>
 
-              <button type="submit">filter posts</button>
+              <StyledButton
+                mode="secondary"
+                CTA="apply filters"
+                type="submit"
+              ></StyledButton>
             </Form>
           );
         }}

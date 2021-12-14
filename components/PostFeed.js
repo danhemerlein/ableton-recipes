@@ -6,7 +6,8 @@ import { remHelper } from 'lib/utilities/remHelper';
 const Feed = styled.ul`
   display: flex;
   flex-wrap: wrap;
-  padding: ${remHelper[16]};
+  margin-top: ${remHelper[16]};
+  width: 100%;
 `;
 
 const PostFeed = ({ posts, admin }) => {

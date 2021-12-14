@@ -14,6 +14,8 @@ const UserProfile = ({ user, likedPosts }) => {
     setShowUpdateForm(!showUpdateForm);
   };
 
+  console.log(likedPosts);
+
   return (
     <FlexContainer justify="center" items="center" direction="column">
       <P>username: {user.username}</P>
