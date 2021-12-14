@@ -17,7 +17,6 @@ import { UserContext } from 'lib/context';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { remHelper } from 'lib/utilities/remHelper';
-import toast from 'react-hot-toast';
 import Button from 'components/Button';
 
 const StyledButton = styled(Button)`
@@ -62,8 +61,6 @@ function LikeButton({ postID }) {
     await updateDoc(doc(firestore, 'posts', postID), {
       heartCount: increment(1),
     });
-
-    toast.success('post liked successfully!');
   };
 
   const removeLike = async () => {
@@ -72,12 +69,10 @@ function LikeButton({ postID }) {
     await updateDoc(doc(firestore, 'posts', postID), {
       heartCount: increment(-1),
     });
-
-    toast.success('post unliked successfully!');
   };
 
   return !liked ? (
-    <StyledButton mode="primary" CTA={''} onClick={addLike}></StyledButton>
+    <StyledButton mode="primary" CTA="like" onClick={addLike}></StyledButton>
   ) : (
     <StyledButton
       mode="primary"

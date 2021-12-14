@@ -1,7 +1,7 @@
 import { Field, Form, Formik } from 'formik';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { getAllDocumentsInACollection } from '../lib/firebase';
+import { getAllDocumentsInACollection } from 'lib/firebase';
 import { P } from 'styles/elements/typography';
 import { remHelper } from 'lib/utilities/remHelper';
 import Button from 'components/Button';

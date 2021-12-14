@@ -74,8 +74,12 @@ const Title = styled(H2)`
   justify-content: space-between;
 `;
 
-export function PostCard({ post, admin }) {
+export function PostCard({ post, admin, author }) {
   const [createdAt, setCreatedAt] = useState({});
+
+  console.log(author[0].links['instagram']);
+  console.log(author[0].links['youtube']);
+
   const [UIHeartCount, setUIHeartCount] = useState(post.heartCount);
 
   useEffect(async () => {
@@ -102,6 +106,25 @@ export function PostCard({ post, admin }) {
       </Title>
 
       <StyledP>author: {post.author}</StyledP>
+
+      {author && (
+        <div>
+          <a
+            href={author[0].links['instagram']}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            instagram
+          </a>
+          <a
+            href={author[0].links['youtube']}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            youtube
+          </a>
+        </div>
+      )}
 
       <TagsContainer>
         <P>tags:</P>
