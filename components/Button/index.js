@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { remHelper } from 'lib/utilities/remHelper';
+import { Span } from 'styles/elements/typography';
 
 const StyledButton = styled.button`
   padding: ${remHelper[4]};
@@ -19,7 +20,7 @@ const StyledButton = styled.button`
 const Button = ({ className, CTA, clickHandler, mode }) => {
   return (
     <StyledButton className={className} onClick={clickHandler} mode={mode}>
-      {CTA}
+      <Span>{CTA}</Span>
     </StyledButton>
   );
 };

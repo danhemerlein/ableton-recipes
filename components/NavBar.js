@@ -1,12 +1,18 @@
 import Link from 'next/link';
+import { flipps } from 'styles/utilities';
 import { useContext } from 'react';
 import { UserContext } from 'lib/context';
 import styled from 'styled-components';
 import { remHelper } from 'lib/utilities/remHelper';
-import { P } from 'styles/elements/typography';
+import { P, H1 } from 'styles/elements/typography';
 
 const StyledNav = styled.nav`
   height: ${remHelper[32]};
+`;
+
+const Headline = styled(H1)`
+  ${flipps};
+  font-size: ${remHelper[16]};
 `;
 
 const UL = styled.ul`
@@ -20,9 +26,11 @@ const NavBar = ({}) => {
   return (
     <StyledNav>
       <UL>
-        <P as="li">
-          <Link href="/">ableton recipes</Link>
-        </P>
+        <li>
+          <Headline>
+            <Link href="/">ableton recipes</Link>
+          </Headline>
+        </li>
 
         {/* user is signed in and has a username */}
         {username && (

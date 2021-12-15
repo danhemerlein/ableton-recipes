@@ -1,0 +1,13 @@
+@font-face {
+  font-family: "flipps_regular";
+  src: url("./Fipps-Regular.otf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "linux_libertine";
+  src: url("./LinLibertine_R.ttf");
+  font-weight: normal;
+  font-style: normal;
+}

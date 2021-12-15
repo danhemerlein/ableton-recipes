@@ -8,6 +8,8 @@ const Metatags = ({
   return (
     <Head>
       <title>{title}</title>
+      <link href="/fonts/fonts.css" rel="stylesheet" />
+
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:site" content="@fireship_dev" />
       <meta name="twitter:title" content={title} />

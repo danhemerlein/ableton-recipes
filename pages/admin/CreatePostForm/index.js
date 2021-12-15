@@ -77,8 +77,12 @@ const StyledForm = styled(Form)`
 const CreatePostForm = ({ tags, authors }) => {
   const { username } = useContext(UserContext);
   const router = useRouter();
+
   const [slugIsValid, setSlugIsValid] = useState(true);
   const [slugLoading, setSlugLoading] = useState(false);
+
+  const [linkIsValid, setLinkIsValid] = useState(true);
+  const [linkLoading, setLinkLoading] = useState(false);
 
   // Hit the database for slug match after each debounced change
   // useCallback is required for debounce to work
@@ -106,6 +110,29 @@ const CreatePostForm = ({ tags, authors }) => {
     []
   );
 
+  const checkLink = useCallback(
+    _.debounce(async (link) => {
+      setLinkLoading(true);
+
+      const collectionGroupQuery = query(
+        collectionGroup(firestore, 'posts'),
+        where('link', '==', link)
+      );
+
+      const querySnapshot = await getDocs(collectionGroupQuery);
+
+      const posts = querySnapshot.docs.map(docToJSON);
+
+      if (posts.length) {
+        setLinkIsValid(false);
+      } else {
+        setLinkIsValid(true);
+      }
+      setLinkLoading(false);
+    }, 250),
+    []
+  );
+
   // Create a new post in firestore
   const createPost = async (formValues) => {
     const uid = auth.currentUser.uid;
@@ -128,16 +155,16 @@ const CreatePostForm = ({ tags, authors }) => {
       heartCount: 0,
     };
 
-    if (slugIsValid) {
+    if (slugIsValid && linkIsValid) {
       const newPost = await addDoc(collection(firestore, 'posts'), data);
       const fileID = newPost.id;
       const postDocID = await updateDoc(doc(firestore, 'posts', fileID), {
         id: fileID,
       });
-      toast.success('Post created!');
+      toast.success('post created!');
     } else {
       toast.error(
-        'a post with that title and slug already exist - please edit the title'
+        'a post with that title, slug or link already exist - please edit the title or link'
       );
     }
   };
@@ -167,14 +194,26 @@ const CreatePostForm = ({ tags, authors }) => {
         }) => {
           const setTitleValue = (titleString) => {
             setFieldTouched('title', true, false);
-            checkSlug(titleString);
+            checkLink(titleString);
 
             return setFieldValue('title', titleString);
+          };
+
+          const setLinkValue = (linkString) => {
+            setFieldTouched('link', true, false);
+            checkSlug(linkString);
+
+            return setFieldValue('link', linkString);
           };
 
           const titleChangeHandler = (e) => {
             e.preventDefault();
             setTitleValue(e.target.value);
+          };
+
+          const linkChangeHandler = (e) => {
+            e.preventDefault();
+            setLinkValue(e.target.value);
           };
 
           return (
@@ -208,7 +247,12 @@ const CreatePostForm = ({ tags, authors }) => {
                 <TextInputLabel as="label" htmlFor="link">
                   link
                 </TextInputLabel>
-                <Field type="text" name="link" value={values.link}></Field>
+                <Field
+                  type="text"
+                  name="link"
+                  value={values.link}
+                  onChange={linkChangeHandler}
+                ></Field>
                 <ErrorMessage name="link" />
               </FormFieldContainer>
 
