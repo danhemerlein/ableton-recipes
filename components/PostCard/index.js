@@ -74,11 +74,20 @@ const Title = styled(H2)`
   justify-content: space-between;
 `;
 
-export function PostCard({ post, admin, author }) {
+export function PostCard({ post, admin, authors }) {
   const [createdAt, setCreatedAt] = useState({});
 
-  console.log(author[0].links['instagram']);
-  console.log(author[0].links['youtube']);
+  const author = authors.filter((a) => a.id === post.author);
+  const ig = post.link.includes('instagram');
+  const yt = post.link.includes('youtube');
+
+  let authorLink;
+
+  if (ig) {
+    authorLink = author[0].links.instagram;
+  } else if (yt) {
+    authorLink = author[0].links.youtube;
+  }
 
   const [UIHeartCount, setUIHeartCount] = useState(post.heartCount);
 
@@ -105,26 +114,12 @@ export function PostCard({ post, admin, author }) {
         </StyledP>
       </Title>
 
-      <StyledP>author: {post.author}</StyledP>
-
-      {author && (
-        <div>
-          <a
-            href={author[0].links['instagram']}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            instagram
-          </a>
-          <a
-            href={author[0].links['youtube']}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            youtube
-          </a>
-        </div>
-      )}
+      <StyledP>
+        author:
+        <a href={authorLink} target="_blank">
+          {post.author}
+        </a>
+      </StyledP>
 
       <TagsContainer>
         <P>tags:</P>

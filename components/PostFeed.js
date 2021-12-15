@@ -12,10 +12,6 @@ const Feed = styled.ul`
 `;
 
 const PostFeed = ({ posts, admin }) => {
-  if (!posts) {
-    return null;
-  }
-
   const [authors, setAuthors] = useState([]);
 
   useEffect(async () => {
@@ -23,13 +19,15 @@ const PostFeed = ({ posts, admin }) => {
     setAuthors(statefulAuthors);
   }, []);
 
+  if (!posts || !authors.length) {
+    return null;
+  }
+
   return (
     <Feed>
       {posts.map((post) => {
-        const author = authors.filter((author) => author.id === post.author);
-
         return (
-          <PostCard author={author} post={post} key={post.id} admin={admin} />
+          <PostCard authors={authors} post={post} key={post.id} admin={admin} />
         );
       })}
     </Feed>
