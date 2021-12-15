@@ -18,10 +18,12 @@ const theme = {
         background: generalScheme.white,
         border: `1px solid ${generalScheme.black}`,
         color: generalScheme.black,
+        disabled: '#6b6b6b',
         backgroundHover: generalScheme.black,
         colorHover: generalScheme.white,
       },
       secondary: {
+        disabled: '#6b6b6b',
         background: generalScheme.black,
         color: generalScheme.white,
         border: `1px solid ${generalScheme.black}`,

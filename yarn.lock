@@ -3344,6 +3344,11 @@ process@0.11.10:
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha1-czIwDoQBYb2j5podHZGn1LwW8YI=
 
+profanities@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/profanities/-/profanities-3.0.0.tgz#b7720a5cc837bdc68a7493f1df22e9d41a85c41b"
+  integrity sha512-rBiturymXv/YGwnXmltd02crSLPW8XnC+btmAk6XxmJ4/GCEQ0lK/JEs/RG14ehuU1U/jZIAPsQjXNZpmS1O1Q==
+
 progress@^2.0.0:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"

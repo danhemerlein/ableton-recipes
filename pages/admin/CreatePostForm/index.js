@@ -123,8 +123,6 @@ const CreatePostForm = ({ tags, authors }) => {
 
       const posts = querySnapshot.docs.map(docToJSON);
 
-      console.log(posts.length);
-
       if (posts.length) {
         setLinkIsValid(false);
       } else {

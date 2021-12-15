@@ -1,10 +1,8 @@
 import UserSettingsForm from 'components/UserSettingsForm';
-import { P } from 'styles/elements/typography';
+import { P, H2 } from 'styles/elements/typography';
 import { useState } from 'react';
 import PostFeed from './PostFeed';
-
 import { FlexContainer } from 'styles/elements/containers';
-
 import { SignOutButton } from '@pages/enter/SignOutButton';
 
 const UserProfile = ({ user, likedPosts }) => {
@@ -17,16 +15,14 @@ const UserProfile = ({ user, likedPosts }) => {
   console.log(likedPosts);
 
   return (
-    <FlexContainer justify="center" items="center" direction="column">
-      <P>username: {user.username}</P>
+    <FlexContainer direction="column">
+      {/* <button onClick={toggleUpdateForm}>update user settings</button> */}
 
-      <button onClick={toggleUpdateForm}>update user settings</button>
-
-      {showUpdateForm && <UserSettingsForm username={user.username} />}
+      {/* {showUpdateForm && <UserSettingsForm username={user.username} />} */}
 
       <SignOutButton />
 
-      <P>liked posts</P>
+      <H2>liked posts</H2>
 
       <PostFeed posts={likedPosts}></PostFeed>
     </FlexContainer>

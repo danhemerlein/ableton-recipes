@@ -17,6 +17,7 @@ import {
   buildDate,
 } from './lib';
 import AuthCheck from '@components/AuthCheck';
+import DisabledLikeButton from '@components/DisabledLikeButton';
 
 const Card = styled.li`
   width: 100%;
@@ -157,7 +158,7 @@ export function PostCard({ post, admin, authors }) {
           <span>🖤 {UIHeartCount || 0}</span>
         </StyledP>
 
-        <AuthCheck>
+        <AuthCheck fallback={<DisabledLikeButton />}>
           <LikeButton postID={post.id} />
         </AuthCheck>
       </FlexContainer>

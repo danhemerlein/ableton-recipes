@@ -3,11 +3,12 @@ import _ from 'lodash';
 import { above } from 'styles/utilities';
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { FlexContainer } from 'styles/elements/containers';
-import { UserContext } from '../../lib/context';
-import { firestore } from '../../lib/firebase';
+import { UserContext } from 'lib/context';
+import { firestore } from 'lib/firebase';
 import { P, H2 } from 'styles/elements/typography';
 import { remHelper } from 'lib/utilities/remHelper';
 import styled from 'styled-components';
+import { profanities } from 'profanities';
 
 const Container = styled(FlexContainer)`
   width: 100%;
@@ -52,6 +53,8 @@ export function UserNameForm() {
         const docSnap = await getDoc(usernameRef);
 
         const exists = docSnap.exists();
+
+        console.log(profanities.includes('username')); // true
 
         setIsValid(!exists);
         setLoading(false);
