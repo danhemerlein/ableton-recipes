@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { FlexContainer } from 'styles/elements/containers';
 import LikeButton from '@components/LikeButton';
 import { H2, P } from 'styles/elements/typography';
-
+import { anchorColor } from 'styles/utilities';
 import { useEffect, useState } from 'react';
 import { doc, onSnapshot } from '@firebase/firestore';
 import { firestore } from 'lib/firebase';
@@ -66,12 +66,30 @@ const TagsContainer = styled(FlexContainer)`
 
 const StyledP = styled(P)`
   margin: ${remHelper[8]} 0;
+
+  a {
+    ${({ theme, mode }) => {
+      return anchorColor({
+        color: theme.link[mode].color,
+        textDecoration: 'none',
+      });
+    }}
+  }
 `;
 
 const Title = styled(H2)`
   margin: ${remHelper[8]} 0;
   display: flex;
   justify-content: space-between;
+
+  a {
+    ${({ theme, mode }) => {
+      return anchorColor({
+        color: theme.link[mode].color,
+        textDecoration: 'none',
+      });
+    }}
+  }
 `;
 
 export function PostCard({ post, admin, authors }) {
@@ -103,21 +121,21 @@ export function PostCard({ post, admin, authors }) {
     <Card>
       {admin && <>{post.published ? <P>Live</P> : <P>Unpublished</P>}</>}
 
-      <Title>
+      <Title mode="primary">
         <a href={post.link} target="_blank">
           {post.title}
         </a>
 
-        <StyledP as="span">
+        <StyledP as="span" mode="primary">
           added&nbsp;{createdAt.month}&nbsp;{createdAt.dayNumber}&nbsp;
           {createdAt.year}
         </StyledP>
       </Title>
 
-      <StyledP>
+      <StyledP mode="primary">
         author:
         <a href={authorLink} target="_blank">
-          {post.author}
+          &nbsp;{post.author}
         </a>
       </StyledP>
 
@@ -135,7 +153,7 @@ export function PostCard({ post, admin, authors }) {
       </TagsContainer>
 
       <FlexContainer>
-        <StyledP>
+        <StyledP mode="primary">
           <span>🖤 {UIHeartCount || 0}</span>
         </StyledP>
 
@@ -145,7 +163,7 @@ export function PostCard({ post, admin, authors }) {
       </FlexContainer>
 
       {admin && (
-        <StyledP>
+        <StyledP mode="primary">
           <Link href={`/admin/${post.slug}`}>Edit</Link>
         </StyledP>
       )}

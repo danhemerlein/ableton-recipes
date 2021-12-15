@@ -1,19 +1,27 @@
 import styled from 'styled-components';
-import { libertine } from 'styles/utilities';
 import { remHelper } from 'lib/utilities/remHelper';
+import { anchorColor } from 'styles/utilities';
+import { rainy_hearts } from 'styles/utilities';
 
-const StyledButton = styled.button`
+const StyledLink = styled.a`
   padding: ${remHelper[4]};
-  cursor: pointer;
+
   background: ${({ theme, mode }) => theme.button[mode].background};
   border: ${({ theme, mode }) => theme.button[mode].border};
-  color: ${({ theme, mode }) => theme.button[mode].color};
 
   font-size: ${remHelper[16]};
 
+  ${rainy_hearts};
+
   transition: background 0.25s ease-in-out, color 0.25s ease-in-out;
 
-  ${libertine}
+  ${({ theme, mode }) => {
+    return anchorColor({
+      color: theme.button[mode].color,
+      textDecoration: 'none',
+      textDecorationHover: 'none',
+    });
+  }}
 
   &:hover {
     background: ${({ theme, mode }) => theme.button[mode].backgroundHover};
@@ -21,11 +29,11 @@ const StyledButton = styled.button`
   }
 `;
 
-const Button = ({ className, CTA, clickHandler, mode }) => {
+const LinkButton = ({ className, CTA, HREF, mode }) => {
   return (
-    <StyledButton className={className} onClick={clickHandler} mode={mode}>
+    <StyledLink className={className} href={HREF} mode={mode}>
       {CTA}
-    </StyledButton>
+    </StyledLink>
   );
 };
-export default Button;
+export default LinkButton;

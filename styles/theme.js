@@ -9,6 +9,10 @@ const theme = {
     tagBackground: '#000000',
     tagForeground: '#FFFFFF',
     general: generalScheme,
+    link: {
+      primary: { color: generalScheme.black },
+      secondary: { color: generalScheme.white },
+    },
     button: {
       primary: {
         background: generalScheme.white,

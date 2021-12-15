@@ -18,9 +18,11 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { remHelper } from 'lib/utilities/remHelper';
 import Button from 'components/Button';
+import { rainy_hearts } from 'styles/utilities';
 
 const StyledButton = styled(Button)`
   margin-left: ${remHelper[8]};
+  ${rainy_hearts};
 `;
 
 function LikeButton({ postID }) {

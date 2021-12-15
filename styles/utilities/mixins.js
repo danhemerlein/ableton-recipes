@@ -34,7 +34,6 @@ export const anchorColor = ({
 
   &:hover {
     ${textDecorationHover && `text-decoration: ${textDecorationHover}`};
-
     color: ${color};
   }
 `;

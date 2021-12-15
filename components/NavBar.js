@@ -1,18 +1,30 @@
 import Link from 'next/link';
-import { flipps } from 'styles/utilities';
+import { flipps, rainy_hearts } from 'styles/utilities';
 import { useContext } from 'react';
 import { UserContext } from 'lib/context';
 import styled from 'styled-components';
 import { remHelper } from 'lib/utilities/remHelper';
 import { P, H1 } from 'styles/elements/typography';
+import LinkButton from './LinkButton';
+import { anchorColor } from 'styles/utilities';
 
 const StyledNav = styled.nav`
-  height: ${remHelper[32]};
+  margin-bottom: ${remHelper[16]};
 `;
 
 const Headline = styled(H1)`
   ${flipps};
   font-size: ${remHelper[16]};
+
+  a {
+    ${({ theme, mode }) => {
+      return anchorColor({
+        color: theme.button[mode].color,
+        textDecoration: 'none',
+        textDecorationHover: 'none',
+      });
+    }}
+  }
 `;
 
 const UL = styled.ul`
@@ -27,18 +39,20 @@ const NavBar = ({}) => {
     <StyledNav>
       <UL>
         <li>
-          <Headline>
+          <Headline mode="primary">
             <Link href="/">ableton recipes</Link>
           </Headline>
         </li>
 
         {/* user is signed in and has a username */}
         {username && (
-          <>
-            <P as="li">
-              <Link href={`/${username}`}>view profile</Link>
-            </P>
-          </>
+          <li>
+            <LinkButton
+              CTA="view profile"
+              mode="primary"
+              HREF={`/${username}`}
+            />
+          </li>
         )}
 
         {/* user is not signed in OR has not created a user name */}

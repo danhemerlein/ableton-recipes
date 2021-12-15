@@ -5,3 +5,7 @@ export const flipps = `
 export const libertine = `
   font-family: "linux_libertine", serif;
 `;
+
+export const rainy_hearts = `
+  font-family: "rainy_hearts", serif;
+`;

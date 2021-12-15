@@ -123,6 +123,8 @@ const CreatePostForm = ({ tags, authors }) => {
 
       const posts = querySnapshot.docs.map(docToJSON);
 
+      console.log(posts.length);
+
       if (posts.length) {
         setLinkIsValid(false);
       } else {
@@ -194,14 +196,15 @@ const CreatePostForm = ({ tags, authors }) => {
         }) => {
           const setTitleValue = (titleString) => {
             setFieldTouched('title', true, false);
-            checkLink(titleString);
+            checkSlug(titleString);
 
             return setFieldValue('title', titleString);
           };
 
           const setLinkValue = (linkString) => {
+            console.log('running set link value');
             setFieldTouched('link', true, false);
-            checkSlug(linkString);
+            checkLink(linkString);
 
             return setFieldValue('link', linkString);
           };

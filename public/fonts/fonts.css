@@ -11,3 +11,11 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "rainy_hearts";
+  src: url("./rainyhearts.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
