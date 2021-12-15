@@ -1,13 +1,15 @@
 import signInwithEmailAndPasswordModel from './signInWithEmailAndPasswordModel';
 import { useRouter } from 'next/dist/client/router';
-import { above } from 'styles/utilities';
+import { above, errorToastStyles } from 'styles/utilities';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import schema from './validationSchema';
 import { P, H2 } from 'styles/elements/typography';
 import { remHelper } from 'lib/utilities/remHelper';
 import styled from 'styled-components';
-import { FlexContainer } from 'styles/elements/containers';
+import { CenterContainer, FlexContainer } from 'styles/elements/containers';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import toast from 'react-hot-toast';
+import Button from 'components/Button';
 
 const Container = styled(FlexContainer)`
   width: 100%;
@@ -29,10 +31,14 @@ const StyledLabel = styled(P)`
 
 const StyledField = styled(Field)`
   width: 100%;
+  border: ${({ theme }) => theme.textInput.border};
+  color: ${({ theme }) => theme.textInput.color};
+  padding: ${remHelper[4]};
 `;
 
-const StyledButton = styled.button`
-  margin: ${remHelper[8]} 0;
+const StyledButton = styled(Button)`
+  margin: ${remHelper[8]} auto;
+  width: 24rem;
 `;
 
 const SignInPage = ({}) => {
@@ -53,37 +59,51 @@ const SignInPage = ({}) => {
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
+            toast(
+              `error code ${errorCode} message ${errorMessage}`,
+              errorToastStyles
+            );
           });
         setSubmitting(false);
       }}
     >
-      <Container direction="column">
+      <CenterContainer direction="column">
         <Form id={formId}>
-          <H2>sign in with email</H2>
+          <H2 textAlign="center">sign in with email</H2>
 
           <StyledFieldset>
             <StyledLabel as="label" htmlFor="email">
               {formField.email.label}
             </StyledLabel>
+
             <StyledField type="email" name="email" id="email" />
-            <ErrorMessage name="email"></ErrorMessage>
+
+            <P>
+              <ErrorMessage name="email" />
+            </P>
           </StyledFieldset>
 
           <StyledFieldset>
             <StyledLabel as="label" htmlFor="password">
               {formField.password.label}
             </StyledLabel>
+
             <StyledField
               type="password"
               name="password"
               id="password"
             ></StyledField>
-            <ErrorMessage name="password"></ErrorMessage>
+
+            <P>
+              <ErrorMessage name="password"></ErrorMessage>
+            </P>
           </StyledFieldset>
 
-          <StyledButton type="submit">sign in</StyledButton>
+          <FlexContainer>
+            <StyledButton CTA="sign in" mode="primary" type="submit" />
+          </FlexContainer>
         </Form>
-      </Container>
+      </CenterContainer>
     </Formik>
   );
 };

@@ -8,6 +8,7 @@ import { P, H2 } from 'styles/elements/typography';
 import { remHelper } from 'lib/utilities/remHelper';
 import styled from 'styled-components';
 import Button from '@components/Button';
+import { errorToastStyles } from 'styles/utilities';
 import toast from 'react-hot-toast';
 
 const StyledFieldset = styled.fieldset`
@@ -33,14 +34,6 @@ const StyledButton = styled(Button)`
 
 const CreateUserWithEmailAndPassword = ({}) => {
   const { formId, formField } = createUserWithEmailAndPasswordModel;
-
-  const errorToastStyles = {
-    icon: '🔴',
-    style: {
-      color: '#C23B22',
-      border: '1px solid #C23B22',
-    },
-  };
 
   const createUser = (email, password) => {
     createUserWithEmailAndPassword(auth, email, password).catch(function (
@@ -113,6 +106,7 @@ const CreateUserWithEmailAndPassword = ({}) => {
               id="passwordReentry"
             ></StyledField>
           </StyledFieldset>
+
           <FlexContainer>
             <StyledButton CTA="create account" mode="primary" />
           </FlexContainer>
