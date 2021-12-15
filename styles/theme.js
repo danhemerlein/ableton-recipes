@@ -9,6 +9,10 @@ const theme = {
     tagBackground: '#000000',
     tagForeground: '#FFFFFF',
     general: generalScheme,
+    textInput: {
+      border: `1px solid ${generalScheme.black}`,
+      color: generalScheme.black,
+    },
     link: {
       primary: { color: generalScheme.black },
       secondary: { color: generalScheme.white },

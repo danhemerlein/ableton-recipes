@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { UserContext } from 'lib/context';
 import styled from 'styled-components';
 import { remHelper } from 'lib/utilities/remHelper';
-import { P, H1 } from 'styles/elements/typography';
+import { P, H1, Span } from 'styles/elements/typography';
 import LinkButton from './LinkButton';
 import { anchorColor } from 'styles/utilities';
 
@@ -57,11 +57,11 @@ const NavBar = ({}) => {
 
         {/* user is not signed in OR has not created a user name */}
         {!username && (
-          <P as="li">
-            <Link href="/sign-in">log in</Link>
-            <span>&nbsp;/&nbsp;</span>
-            <Link href="/enter">sign up</Link>
-          </P>
+          <li>
+            <LinkButton CTA="sign in" mode="secondary" HREF={`/sign-in`} />
+            <Span>&nbsp;/&nbsp;</Span>
+            <LinkButton CTA="sign up" mode="primary" HREF={`/enter`} />
+          </li>
         )}
       </UL>
     </StyledNav>

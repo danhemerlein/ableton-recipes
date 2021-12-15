@@ -12,6 +12,12 @@ const model = {
       label: 'password',
       errorMessage: 'password is required',
     },
+
+    passwordReentry: {
+      name: 'passwordReentry',
+      label: 're-enter password',
+      errorMessage: "passwords don't match",
+    },
   },
 };
 

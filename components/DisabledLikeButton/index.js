@@ -21,7 +21,12 @@ const StyledLink = styled.a`
 `;
 
 const mouseEnter = () => {
-  toast.error('create an account or log in to like posts');
+  toast('create an account or log in to like posts', {
+    duration: 2000,
+
+    // Custom Icon
+    icon: '🎧',
+  });
 };
 
 const DisabledLikeButton = () => {

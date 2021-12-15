@@ -28,7 +28,18 @@ function App({ Component, pageProps }) {
           <UserContext.Provider value={userData}>
             <NavBar />
             <Component {...pageProps} />
-            <Toaster />
+            <Toaster
+              toastOptions={{
+                style: {
+                  color: '#000',
+                  background: '#fff',
+                  fontFamily: 'linux_libertine',
+                  fontSize: '1.6rem',
+                  border: '1px solid black',
+                  borderRadius: '0',
+                },
+              }}
+            />
           </UserContext.Provider>
         </ThemeContextProvider>
       </ThemeProvider>

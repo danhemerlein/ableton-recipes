@@ -1,15 +1,16 @@
 import { useContext } from 'react';
-import Link from 'next/link';
-import { UserContext } from '../../lib/context';
+import { above } from 'styles/utilities';
+import Metatags from 'components/Metatags';
+import { UserContext } from 'lib/context';
 import CreateUserWithEmailAndPassword from './CreateUserWithEmailAndPassword';
 import { SignInWithGoogleButton } from './SignInWithGoogleButton';
 import { SignOutButton } from './SignOutButton';
-import { above } from 'styles/utilities';
 import { P } from 'styles/elements/typography';
 import { UserNameForm } from './UserNameForm';
 import styled from 'styled-components';
 import { CenterContainer, FlexContainer } from 'styles/elements/containers';
 import { remHelper } from 'lib/utilities/remHelper';
+import LinkButton from '@components/LinkButton';
 
 const StyledP = styled(P)`
   margin: ${remHelper[8]} 0;
@@ -23,6 +24,8 @@ const Enter = () => {
   const { user, username } = useContext(UserContext);
   return (
     <main>
+      <Metatags title="user profile page" />
+
       {user ? (
         !username ? (
           <UserNameForm />
@@ -33,14 +36,18 @@ const Enter = () => {
         <CenterContainer direction="column">
           <CreateUserWithEmailAndPassword />
 
-          <SignInParagraph>
+          <SignInParagraph textAlign="center">
             already have an account?&nbsp;
-            <Link href="sign-in">sign in</Link>
+            <LinkButton mode="primary" HREF="/sign-in" CTA="sign in">
+              sign in
+            </LinkButton>
           </SignInParagraph>
 
-          <StyledP>or</StyledP>
+          <StyledP textAlign="center">or</StyledP>
 
-          <SignInWithGoogleButton />
+          <FlexContainer>
+            <SignInWithGoogleButton />
+          </FlexContainer>
         </CenterContainer>
       )}
     </main>
