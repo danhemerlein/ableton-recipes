@@ -64,11 +64,6 @@ export function UserNameForm() {
 
         const profane = profanities.includes(username);
 
-        console.log('!exists', !exists);
-        console.log('profane', profane);
-
-        console.log(!exists && !profane);
-
         // if the document snapshot exists that means its not valid
         // if the username entry is profane - that means its not valid either
 
