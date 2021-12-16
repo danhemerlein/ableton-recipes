@@ -9,6 +9,7 @@ import { P, H2 } from 'styles/elements/typography';
 import { remHelper } from 'lib/utilities/remHelper';
 import styled from 'styled-components';
 import { profanities } from 'profanities';
+import Button from 'components/Button';
 
 const Container = styled(FlexContainer)`
   width: 100%;
@@ -27,13 +28,21 @@ const StyledP = styled(P)`
   margin: ${remHelper[8]} 0;
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled(Button)`
   margin: ${remHelper[8]} 0;
+`;
+
+const StyledField = styled.input`
+  width: 100%;
+  border: ${({ theme }) => theme.textInput.border};
+  color: ${({ theme }) => theme.textInput.color};
+  padding: ${remHelper[4]};
 `;
 
 export function UserNameForm() {
   const [formValue, setFormValue] = useState('');
   const [isValid, setIsValid] = useState(false);
+  const [isProfane, setIsProfane] = useState(false);
   const [loading, setLoading] = useState(false);
   const USERNAME_LENGTH = 3;
 
@@ -54,7 +63,7 @@ export function UserNameForm() {
 
         const exists = docSnap.exists();
 
-        console.log(profanities.includes('username')); // true
+        setIsProfane(profanities.includes(username));
 
         setIsValid(!exists);
         setLoading(false);
@@ -100,9 +109,12 @@ export function UserNameForm() {
     }
   };
 
-  function UsernameMessage({ username, isValid, loading }) {
+  function UsernameMessage({ username, isValid, loading, isProfane }) {
+    console.log('username message is profane', isProfane);
     if (loading) {
       return <StyledP>Checking...</StyledP>;
+    } else if (username && isValid && isProfane) {
+      return <StyledP>please select another username</StyledP>;
     } else if (isValid) {
       return <StyledP>{username} is available!</StyledP>;
     } else if (username && !isValid) {
@@ -116,10 +128,10 @@ export function UserNameForm() {
     !username && (
       <form onSubmit={onSubmit}>
         <Container direction="column">
-          <Label as="label" htmlFor="username">
+          <Label textAlign="center" as="label" htmlFor="username">
             choose username
           </Label>
-          <input
+          <StyledField
             name="username"
             type="text"
             id="username"
@@ -131,16 +143,16 @@ export function UserNameForm() {
             username={formValue}
             isValid={isValid}
             loading={loading}
+            isProfane={isProfane}
           />
 
-          <StyledButton type="submit" disabled={!isValid}>
-            submit
-          </StyledButton>
-
-          {/* <h3>debug state</h3> */}
-          {/* <pre>form value: {JSON.stringify(formValue, null, 2)}</pre> */}
-          {/* <pre>loading: {JSON.stringify(loading, null, 2)}</pre> */}
-          {/* <pre>username is valid: {JSON.stringify(isValid, null, 2)}</pre> */}
+          <StyledButton
+            CTA="submit"
+            mode="primary"
+            type="submit"
+            // disabled={!isValid && !isProfane}
+            disabled={true}
+          />
         </Container>
       </form>
     )

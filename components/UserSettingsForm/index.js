@@ -16,7 +16,7 @@ const UserSettingsForm = ({ username }) => {
 
     await updateDoc(userRef, data);
 
-    toast.success('user updated successfully!');
+    toast('user updated successfully!', successToastStyles);
   };
 
   return (

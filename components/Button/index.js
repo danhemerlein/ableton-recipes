@@ -15,15 +15,26 @@ const StyledButton = styled.button`
 
   ${libertine}
 
+  &:disabled {
+    background: ${({ theme, mode }) => theme.button[mode].disabled};
+    cursor: not-allowed;
+    color: ${({ theme, mode }) => theme.button[mode].background};
+  }
+
   &:hover {
     background: ${({ theme, mode }) => theme.button[mode].backgroundHover};
     color: ${({ theme, mode }) => theme.button[mode].colorHover};
   }
 `;
 
-const Button = ({ className, CTA, clickHandler, mode }) => {
+const Button = ({ className, CTA, clickHandler, mode, disabled }) => {
   return (
-    <StyledButton className={className} onClick={clickHandler} mode={mode}>
+    <StyledButton
+      className={className}
+      onClick={clickHandler}
+      mode={mode}
+      disabled={disabled}
+    >
       {CTA}
     </StyledButton>
   );

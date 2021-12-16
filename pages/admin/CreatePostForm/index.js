@@ -9,12 +9,15 @@ import {
   collectionGroup,
   where,
 } from '@firebase/firestore';
+import { above, errorToastStyles } from 'styles/utilities';
 
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { UserContext } from 'lib/context';
 import { auth, firestore, docToJSON } from 'lib/firebase';
 import { remHelper } from 'lib/utilities/remHelper';
 import _ from 'lodash';
+import { successToastStyles } from 'styles/utilities';
+
 import { useRouter } from 'next/dist/client/router';
 import { useCallback, useContext, useState } from 'react';
 import toast from 'react-hot-toast';
@@ -161,10 +164,11 @@ const CreatePostForm = ({ tags, authors }) => {
       const postDocID = await updateDoc(doc(firestore, 'posts', fileID), {
         id: fileID,
       });
-      toast.success('post created!');
+      toast('post created', successToastStyles);
     } else {
-      toast.error(
-        'a post with that title, slug or link already exist - please edit the title or link'
+      toast(
+        'a post with that title, slug or link already exist - please edit the title or link',
+        errorToastStyles
       );
     }
   };

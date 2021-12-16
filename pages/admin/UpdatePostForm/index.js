@@ -6,6 +6,7 @@ import {
 } from '@firebase/firestore';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
+import { successToastStyles } from 'styles/utilities';
 import React from 'react';
 import toast from 'react-hot-toast';
 import { remHelper } from 'lib/utilities/remHelper';
@@ -13,6 +14,7 @@ import { P, H2 } from 'styles/elements/typography';
 import styled from 'styled-components';
 import { formId } from './updatePostFormModel';
 import schema from './validationSchema';
+import { successToastStyles } from 'styles/utilities';
 import { CenterContainer, FlexContainer } from 'styles/elements/containers';
 
 const PostTitle = styled(Field)`
@@ -40,7 +42,7 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
 
     await updateDoc(postRef, data);
 
-    toast.success('post updated successfully!');
+    toast('post updated successfully!', successToastStyles);
   };
 
   const router = useRouter();
@@ -49,7 +51,7 @@ const UpdatePostForm = ({ defaultValues, postRef, preview }) => {
     if (window.confirm('are you sure you want to delete this post?')) {
       await deleteDoc(postRef);
 
-      toast.success('post deleted successfully!');
+      toast('post deleted successfully', successToastStyles);
 
       router.push(`/admin`);
     }
