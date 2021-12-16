@@ -42,7 +42,6 @@ const StyledField = styled.input`
 export function UserNameForm() {
   const [formValue, setFormValue] = useState('');
   const [isValid, setIsValid] = useState(false);
-  const [isProfane, setIsProfane] = useState(false);
   const [loading, setLoading] = useState(false);
   const USERNAME_LENGTH = 3;
 
@@ -63,9 +62,17 @@ export function UserNameForm() {
 
         const exists = docSnap.exists();
 
-        setIsProfane(profanities.includes(username));
+        const profane = profanities.includes(username);
 
-        setIsValid(!exists);
+        console.log('!exists', !exists);
+        console.log('profane', profane);
+
+        console.log(!exists && !profane);
+
+        // if the document snapshot exists that means its not valid
+        // if the username entry is profane - that means its not valid either
+
+        setIsValid(!exists && !profane);
         setLoading(false);
       }
     }, 250),
@@ -109,16 +116,13 @@ export function UserNameForm() {
     }
   };
 
-  function UsernameMessage({ username, isValid, loading, isProfane }) {
-    console.log('username message is profane', isProfane);
+  function UsernameMessage({ username, isValid, loading }) {
     if (loading) {
-      return <StyledP>Checking...</StyledP>;
-    } else if (username && isValid && isProfane) {
-      return <StyledP>please select another username</StyledP>;
+      return <P>Checking...</P>;
     } else if (isValid) {
-      return <StyledP>{username} is available!</StyledP>;
+      return <P>{username} is available!</P>;
     } else if (username && !isValid) {
-      return <StyledP>That username is taken or invalid</StyledP>;
+      return <P>that username is taken or invalid</P>;
     } else {
       return null;
     }
@@ -143,15 +147,13 @@ export function UserNameForm() {
             username={formValue}
             isValid={isValid}
             loading={loading}
-            isProfane={isProfane}
           />
 
           <StyledButton
             CTA="submit"
             mode="primary"
             type="submit"
-            // disabled={!isValid && !isProfane}
-            disabled={true}
+            disabled={!isValid}
           />
         </Container>
       </form>

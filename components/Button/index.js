@@ -19,6 +19,11 @@ const StyledButton = styled.button`
     background: ${({ theme, mode }) => theme.button[mode].disabled};
     cursor: not-allowed;
     color: ${({ theme, mode }) => theme.button[mode].background};
+
+    &:hover {
+      background: ${({ theme, mode }) => theme.button[mode].disabled};
+      color: ${({ theme, mode }) => theme.button[mode].background};
+    }
   }
 
   &:hover {
