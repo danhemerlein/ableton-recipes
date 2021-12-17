@@ -10,6 +10,10 @@ const StyledField = styled(Field)`
   padding: ${remHelper[4]};
 `;
 
+const ErrorWrapper = styled(P)`
+  margin: ${remHelper[8]} 0;
+`;
+
 const TextField = ({ type, name, id, value, changeHandler }) => {
   return (
     <>
@@ -20,9 +24,9 @@ const TextField = ({ type, name, id, value, changeHandler }) => {
         value={value}
         onChange={changeHandler}
       />
-      <P>
+      <ErrorWrapper>
         <ErrorMessage name={name} />
-      </P>
+      </ErrorWrapper>
     </>
   );
 };

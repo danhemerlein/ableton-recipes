@@ -27,3 +27,8 @@ export const Span = styled.span`
   font-size: ${remHelper[16]};
   ${libertine};
 `;
+
+export const Legend = styled.legend`
+  font-size: ${remHelper[16]};
+  ${libertine};
+`;

@@ -1,12 +1,17 @@
 import { FlexContainer } from 'styles/elements/containers';
 import { remHelper } from 'lib/utilities/remHelper';
 import styled from 'styled-components';
-import { P } from 'styles/elements/typography';
+import { P, Legend } from 'styles/elements/typography';
 import { Field } from 'formik';
 
+const StyledFieldset = styled.fieldset`
+  margin-top: ${remHelper[8]};
+`;
+
 const List = styled.ul`
-  margin: 0 0 ${remHelper[8]} 0;
+  margin: ${remHelper[8]} 0 ${remHelper[8]} 0;
   padding: 0;
+  width: 100%;
   list-style: none;
   display: flex;
   flex-wrap: wrap;
@@ -14,12 +19,12 @@ const List = styled.ul`
 
 const CheckboxListItem = styled.li`
   border: ${({ theme }) => theme.border};
-  padding: ${remHelper[8]};
-  border-radius: 25%;
   display: inline;
-  margin: 0 ${remHelper[8]};
-  width: 20%;
+  padding: ${remHelper[8]};
+  margin: ${remHelper[8]};
+  width: calc(20% - ${remHelper[16]});
   display: flex;
+  align-items: center;
   cursor: pointer;
 `;
 
@@ -30,8 +35,8 @@ const StyledCheckbox = styled(Field)`
 
 const CheckboxList = ({ fieldValues, fieldName }) => {
   return (
-    <fieldset>
-      <legend>{fieldName}</legend>
+    <StyledFieldset>
+      <Legend>{fieldName}</Legend>
       <FlexContainer items="center">
         <List>
           {fieldValues.map((value) => {
@@ -51,7 +56,7 @@ const CheckboxList = ({ fieldValues, fieldName }) => {
           })}
         </List>
       </FlexContainer>
-    </fieldset>
+    </StyledFieldset>
   );
 };
 export default CheckboxList;

@@ -206,7 +206,7 @@ const CreatePostForm = ({ tags, authors, plugins, genres }) => {
                   name="title"
                   id="title"
                   value={values.title}
-                  onChange={titleChangeHandler}
+                  changeHandler={titleChangeHandler}
                 />
               </FormFieldContainer>
 
@@ -228,7 +228,7 @@ const CreatePostForm = ({ tags, authors, plugins, genres }) => {
                   type="text"
                   name="link"
                   value={values.link}
-                  onChange={linkChangeHandler}
+                  changeHandler={linkChangeHandler}
                 ></TextField>
               </FormFieldContainer>
 
