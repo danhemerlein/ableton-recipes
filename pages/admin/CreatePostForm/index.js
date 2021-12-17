@@ -9,52 +9,28 @@ import {
   collectionGroup,
   where,
 } from '@firebase/firestore';
-import { above, errorToastStyles } from 'styles/utilities';
-
+import { errorToastStyles } from 'styles/utilities';
+import Button from '@components/Button';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { UserContext } from 'lib/context';
 import { auth, firestore, docToJSON } from 'lib/firebase';
 import { remHelper } from 'lib/utilities/remHelper';
 import _ from 'lodash';
 import { successToastStyles } from 'styles/utilities';
-
+import TextField from '@components/TextField';
 import { useRouter } from 'next/dist/client/router';
 import { useCallback, useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import styled from 'styled-components';
 import { CenterContainer, FlexContainer } from 'styles/elements/containers';
-import { P } from 'styles/elements/typography';
+import { H1, P } from 'styles/elements/typography';
 import { formId } from './createPostFormModel';
 import defaultValues from './defaultValues';
 import schema from './validationSchema';
+import CheckboxList from '@components/CheckboxList';
 
 const FormFieldContainer = styled(FlexContainer)`
   margin: ${remHelper[16]} 0;
-`;
-
-const CheckboxList = styled.ul`
-  margin: 0 0 ${remHelper[8]} 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-`;
-
-const CheckboxListItem = styled.li`
-  border: ${({ theme }) => theme.border};
-
-  padding: ${remHelper[8]};
-  border-radius: 25%;
-  display: inline;
-  margin: 0 ${remHelper[8]};
-  width: 20%;
-  display: flex;
-  cursor: pointer;
-`;
-
-const StyledCheckbox = styled(Field)`
-  cursor: pointer;
-  width: ${remHelper[16]};
 `;
 
 const TextInputLabel = styled(P)`
@@ -65,12 +41,8 @@ const AuthorLabel = styled(P)`
   margin-right: ${remHelper[8]};
 `;
 
-const StyledButton = styled.button`
+const StyledButton = styled(Button)`
   margin: ${remHelper[8]} 0;
-`;
-
-const StyledPre = styled.pre`
-  font-size: 1.6rem;
 `;
 
 const StyledForm = styled(Form)`
@@ -223,22 +195,19 @@ const CreatePostForm = ({ tags, authors, plugins, genres }) => {
 
           return (
             <StyledForm id={formId}>
+              <H1 textAlign="center">create a new post</H1>
               <FormFieldContainer direction="column">
                 <TextInputLabel as="label" htmlFor="title">
                   title
                 </TextInputLabel>
 
-                <Field
+                <TextField
                   type="text"
                   name="title"
                   id="title"
                   value={values.title}
                   onChange={titleChangeHandler}
                 />
-
-                <P>
-                  <ErrorMessage name="title" />
-                </P>
               </FormFieldContainer>
 
               <FormFieldContainer>
@@ -255,16 +224,12 @@ const CreatePostForm = ({ tags, authors, plugins, genres }) => {
                   link
                 </TextInputLabel>
 
-                <Field
+                <TextField
                   type="text"
                   name="link"
                   value={values.link}
                   onChange={linkChangeHandler}
-                ></Field>
-
-                <P>
-                  <ErrorMessage name="link" />
-                </P>
+                ></TextField>
               </FormFieldContainer>
 
               <AuthorLabel as="label" htmlFor="author">
@@ -282,74 +247,9 @@ const CreatePostForm = ({ tags, authors, plugins, genres }) => {
                 })}
               </Field>
 
-              <P>tags:</P>
-              <FormFieldContainer>
-                <FlexContainer items="center">
-                  <CheckboxList>
-                    {tags.map((tag) => {
-                      return (
-                        <CheckboxListItem key={tag.id}>
-                          <P as="label" htmlFor={tag.id}>
-                            {tag.id}
-                          </P>
-                          <StyledCheckbox
-                            type="checkbox"
-                            name="tags"
-                            id={tag.id}
-                            value={tag.id}
-                          />
-                        </CheckboxListItem>
-                      );
-                    })}
-                  </CheckboxList>
-                </FlexContainer>
-              </FormFieldContainer>
-
-              <P>genres:</P>
-              <FormFieldContainer>
-                <FlexContainer items="center">
-                  <CheckboxList>
-                    {genres.map((genre) => {
-                      return (
-                        <CheckboxListItem key={genre.id}>
-                          <P as="label" htmlFor={genre.id}>
-                            {genre.id}
-                          </P>
-                          <StyledCheckbox
-                            type="checkbox"
-                            name="genres"
-                            id={genre.id}
-                            value={genre.id}
-                          />
-                        </CheckboxListItem>
-                      );
-                    })}
-                  </CheckboxList>
-                </FlexContainer>
-              </FormFieldContainer>
-
-              <P>plugins:</P>
-              <FormFieldContainer>
-                <FlexContainer items="center">
-                  <CheckboxList>
-                    {plugins.map((plugin) => {
-                      return (
-                        <CheckboxListItem key={plugin.id}>
-                          <P as="label" htmlFor={plugin.id}>
-                            {plugin.id}
-                          </P>
-                          <StyledCheckbox
-                            type="checkbox"
-                            name="plugins"
-                            id={plugin.id}
-                            value={plugin.id}
-                          />
-                        </CheckboxListItem>
-                      );
-                    })}
-                  </CheckboxList>
-                </FlexContainer>
-              </FormFieldContainer>
+              <CheckboxList fieldValues={tags} fieldName="tags" />
+              <CheckboxList fieldValues={genres} fieldName="genres" />
+              <CheckboxList fieldValues={plugins} fieldName="plugins" />
 
               <FormFieldContainer items="center" items="center">
                 <P as="label" htmlFor="published">
@@ -359,9 +259,11 @@ const CreatePostForm = ({ tags, authors, plugins, genres }) => {
                 <Field type="checkbox" name="published" id="published" />
               </FormFieldContainer>
 
-              <StyledButton type="submit">create new post</StyledButton>
-
-              {/* <StyledPre>{JSON.stringify(values, null, 2)}</StyledPre> */}
+              <StyledButton
+                mode="primary"
+                type="submit"
+                CTA="create new post"
+              />
             </StyledForm>
           );
         }}
