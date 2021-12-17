@@ -30,7 +30,9 @@ const Enter = () => {
         !username ? (
           <UserNameForm />
         ) : (
-          <SignOutButton />
+          <CenterContainer>
+            <SignOutButton />
+          </CenterContainer>
         )
       ) : (
         <CenterContainer direction="column">

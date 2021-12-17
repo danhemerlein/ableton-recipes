@@ -32,7 +32,7 @@ const FormFieldContainer = styled(FlexContainer)`
   margin: ${remHelper[16]} 0;
 `;
 
-const TagsList = styled.ul`
+const CheckboxList = styled.ul`
   margin: 0 0 ${remHelper[8]} 0;
   padding: 0;
   list-style: none;
@@ -40,7 +40,7 @@ const TagsList = styled.ul`
   flex-wrap: wrap;
 `;
 
-const TagLitItem = styled.li`
+const CheckboxListItem = styled.li`
   border: ${({ theme }) => theme.border};
 
   padding: ${remHelper[8]};
@@ -52,7 +52,7 @@ const TagLitItem = styled.li`
   cursor: pointer;
 `;
 
-const TagCheckbox = styled(Field)`
+const StyledCheckbox = styled(Field)`
   cursor: pointer;
   width: ${remHelper[16]};
 `;
@@ -77,7 +77,7 @@ const StyledForm = styled(Form)`
   width: 100%;
 `;
 
-const CreatePostForm = ({ tags, authors }) => {
+const CreatePostForm = ({ tags, authors, plugins, genres }) => {
   const { username } = useContext(UserContext);
   const router = useRouter();
 
@@ -236,7 +236,9 @@ const CreatePostForm = ({ tags, authors }) => {
                   onChange={titleChangeHandler}
                 />
 
-                <ErrorMessage name="title" />
+                <P>
+                  <ErrorMessage name="title" />
+                </P>
               </FormFieldContainer>
 
               <FormFieldContainer>
@@ -252,13 +254,17 @@ const CreatePostForm = ({ tags, authors }) => {
                 <TextInputLabel as="label" htmlFor="link">
                   link
                 </TextInputLabel>
+
                 <Field
                   type="text"
                   name="link"
                   value={values.link}
                   onChange={linkChangeHandler}
                 ></Field>
-                <ErrorMessage name="link" />
+
+                <P>
+                  <ErrorMessage name="link" />
+                </P>
               </FormFieldContainer>
 
               <AuthorLabel as="label" htmlFor="author">
@@ -276,26 +282,72 @@ const CreatePostForm = ({ tags, authors }) => {
                 })}
               </Field>
 
+              <P>tags:</P>
               <FormFieldContainer>
                 <FlexContainer items="center">
-                  <P>tags:</P>
-                  <TagsList>
+                  <CheckboxList>
                     {tags.map((tag) => {
                       return (
-                        <TagLitItem key={tag.id}>
+                        <CheckboxListItem key={tag.id}>
                           <P as="label" htmlFor={tag.id}>
                             {tag.id}
                           </P>
-                          <TagCheckbox
+                          <StyledCheckbox
                             type="checkbox"
                             name="tags"
                             id={tag.id}
                             value={tag.id}
                           />
-                        </TagLitItem>
+                        </CheckboxListItem>
                       );
                     })}
-                  </TagsList>
+                  </CheckboxList>
+                </FlexContainer>
+              </FormFieldContainer>
+
+              <P>genres:</P>
+              <FormFieldContainer>
+                <FlexContainer items="center">
+                  <CheckboxList>
+                    {genres.map((genre) => {
+                      return (
+                        <CheckboxListItem key={genre.id}>
+                          <P as="label" htmlFor={genre.id}>
+                            {genre.id}
+                          </P>
+                          <StyledCheckbox
+                            type="checkbox"
+                            name="genres"
+                            id={genre.id}
+                            value={genre.id}
+                          />
+                        </CheckboxListItem>
+                      );
+                    })}
+                  </CheckboxList>
+                </FlexContainer>
+              </FormFieldContainer>
+
+              <P>plugins:</P>
+              <FormFieldContainer>
+                <FlexContainer items="center">
+                  <CheckboxList>
+                    {plugins.map((plugin) => {
+                      return (
+                        <CheckboxListItem key={plugin.id}>
+                          <P as="label" htmlFor={plugin.id}>
+                            {plugin.id}
+                          </P>
+                          <StyledCheckbox
+                            type="checkbox"
+                            name="plugins"
+                            id={plugin.id}
+                            value={plugin.id}
+                          />
+                        </CheckboxListItem>
+                      );
+                    })}
+                  </CheckboxList>
                 </FlexContainer>
               </FormFieldContainer>
 
@@ -309,7 +361,7 @@ const CreatePostForm = ({ tags, authors }) => {
 
               <StyledButton type="submit">create new post</StyledButton>
 
-              <StyledPre>{JSON.stringify(values, null, 2)}</StyledPre>
+              {/* <StyledPre>{JSON.stringify(values, null, 2)}</StyledPre> */}
             </StyledForm>
           );
         }}

@@ -24,6 +24,16 @@ const model = {
       label: 'tags',
     },
 
+    genres: {
+      name: 'genres',
+      label: 'genres',
+    },
+
+    plugins: {
+      name: 'plugins',
+      label: 'plugins',
+    },
+
     published: {
       name: 'published',
       label: 'publish now?',

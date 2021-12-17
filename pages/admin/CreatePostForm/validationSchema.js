@@ -2,7 +2,7 @@ import * as yup from 'yup';
 import createPostFormModel from './createPostFormModel';
 
 const {
-  formField: { title, link, author, tags, published },
+  formField: { title, link, author, tags, genres, plugins, published },
 } = createPostFormModel;
 
 const schema = [
@@ -20,6 +20,10 @@ const schema = [
       .array()
       .of(yup.string().min(1))
       .required(`${tags.errorMessage}`),
+
+    [genres.name]: yup.array().of(yup.string().min(1)),
+    [plugins.name]: yup.array().of(yup.string().min(1)),
+
     [published.name]: yup.bool(),
   }),
 ];
