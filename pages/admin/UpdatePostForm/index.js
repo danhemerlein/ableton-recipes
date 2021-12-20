@@ -14,7 +14,6 @@ import { P, H2 } from 'styles/elements/typography';
 import styled from 'styled-components';
 import { formId } from './updatePostFormModel';
 import schema from './validationSchema';
-import { successToastStyles } from 'styles/utilities';
 import { CenterContainer, FlexContainer } from 'styles/elements/containers';
 
 const PostTitle = styled(Field)`

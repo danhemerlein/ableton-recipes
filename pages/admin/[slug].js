@@ -1,14 +1,13 @@
-import { doc } from '@firebase/firestore';
+import AuthCheck from 'components/AuthCheck';
+import { getPostBySlug } from 'lib/firebase';
+import { remHelper } from 'lib/utilities/remHelper';
 import Link from 'next/Link';
 import { useRouter } from 'next/router';
-import { P } from 'styles/elements/typography';
 import { useEffect, useState } from 'react';
-import { CenterContainer } from 'styles/elements/containers';
-import AuthCheck from 'components/AuthCheck';
-import { auth, firestore, getPostByUserAndSlug } from 'lib/firebase';
-import UpdatePostForm from './UpdatePostForm';
 import styled from 'styled-components';
-import { remHelper } from 'lib/utilities/remHelper';
+import { CenterContainer } from 'styles/elements/containers';
+import { P } from 'styles/elements/typography';
+import UpdatePostForm from './UpdatePostForm';
 
 const MarginHelper = styled.div`
   margin: ${remHelper[8]} 0;
@@ -33,12 +32,10 @@ function PostManager() {
   const { slug } = router.query;
 
   useEffect(async () => {
-    const userRef = doc(firestore, 'users', auth.currentUser.uid);
-
-    const { postData, refData } = await getPostByUserAndSlug(userRef, slug);
+    const { postData, ref } = await getPostBySlug(slug);
 
     setPost(postData);
-    setPostRef(refData);
+    setPostRef(ref);
   }, []);
 
   return (
