@@ -17,9 +17,9 @@ function CreateNewPost() {
     const statefulAuthors = await getAllDocumentsInACollection('authors');
 
     setTags(statefulTags);
-    setAuthors(statefulAuthors);
     setGenres(statefulGenres);
     setPlugins(statefulPulgins);
+    setAuthors(statefulAuthors);
   }, []);
 
   return (

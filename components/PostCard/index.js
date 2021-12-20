@@ -8,14 +8,9 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { FlexContainer } from 'styles/elements/containers';
 import { H2, P } from 'styles/elements/typography';
-import { above, anchorColor } from 'styles/utilities';
-import {
-  buildDate,
-  getDesktopMarginLeft,
-  getDestkopMarginRight,
-  getTabletMarginLeft,
-  getTabletMarginRight,
-} from './lib';
+import { anchorColor } from 'styles/utilities';
+import { buildDate } from './lib';
+import { UnorderedList } from './UnorderedList';
 
 const Card = styled.li`
   width: 100%;
@@ -23,44 +18,7 @@ const Card = styled.li`
   border: ${({ theme }) => theme.border};
   padding: ${remHelper[8]};
 
-  ${above.tablet`
-    width: calc(50% - ${remHelper[8]});
-
-    ${({ index }) =>
-      String(index) && `margin-right: ${getTabletMarginRight(String(index))};`}
-    ${({ index }) =>
-      String(index) && `margin-left: ${getTabletMarginLeft(String(index))};`}
-  `}
-
-  ${above.desktop`
-    width: calc(25% - ${remHelper.override(12)});
-    ${({ index }) =>
-      String(index) && `margin-right: ${getDestkopMarginRight(String(index))};`}
-    ${({ index }) =>
-      String(index) && `margin-left: ${getDesktopMarginLeft(String(index))};`}
-  `};
-
   margin-bottom: ${remHelper[8]};
-`;
-
-const TagsList = styled.ul`
-  margin: 0 0 10px 0;
-  padding: 0;
-  list-style: none;
-`;
-
-const Tag = styled(P)`
-  border: ${({ theme }) => theme.border};
-  background: ${({ theme }) => theme.tagBackground};
-  color: ${({ theme }) => theme.tagForeground};
-  padding: ${remHelper[4]};
-  margin: 0 ${remHelper[8]};
-  border-radius: 100%;
-  display: inline;
-`;
-
-const TagsContainer = styled(FlexContainer)`
-  margin-top: ${remHelper[16]};
 `;
 
 const StyledP = styled(P)`
@@ -92,11 +50,16 @@ const Title = styled(H2)`
 `;
 
 export function PostCard({ post, authors }) {
-  const [createdAt, setCreatedAt] = useState({});
+  const [UICreatedAt, setUICreatedAt] = useState({});
+  const [UIHeartCount, setUIHeartCount] = useState(heartCount);
+
+  const { heartCount, createdAt, link, title, id, tags, genres, plugins } =
+    post;
 
   const author = authors.filter((a) => a.id === post.author);
-  const ig = post.link.includes('instagram');
-  const yt = post.link.includes('youtube');
+
+  const ig = link.includes('instagram');
+  const yt = link.includes('youtube');
 
   let authorLink;
 
@@ -106,12 +69,10 @@ export function PostCard({ post, authors }) {
     authorLink = author[0].links.youtube;
   }
 
-  const [UIHeartCount, setUIHeartCount] = useState(post.heartCount);
-
   useEffect(async () => {
-    setCreatedAt(buildDate(new Date(post.createdAt)));
+    setUICreatedAt(buildDate(new Date(createdAt)));
 
-    const unsub = onSnapshot(doc(firestore, 'posts', post.id), (doc) => {
+    const unsub = onSnapshot(doc(firestore, 'posts', id), (doc) => {
       setUIHeartCount(doc.data().heartCount);
     });
   }, []);
@@ -119,35 +80,28 @@ export function PostCard({ post, authors }) {
   return (
     <Card>
       <Title mode="primary">
-        <a href={post.link} target="_blank">
-          {post.title}
+        <a href={link} target="_blank">
+          {title}
         </a>
 
         <StyledP as="span" mode="primary">
-          added&nbsp;{createdAt.month}&nbsp;{createdAt.dayNumber}&nbsp;
-          {createdAt.year}
+          added&nbsp;{UICreatedAt.month}&nbsp;{UICreatedAt.dayNumber}&nbsp;
+          {UICreatedAt.year}
         </StyledP>
       </Title>
 
       <StyledP mode="primary">
         author:
         <a href={authorLink} target="_blank">
-          &nbsp;{post.author}
+          &nbsp;{author.name}
         </a>
       </StyledP>
 
-      <TagsContainer>
-        <P>tags:</P>
-        <TagsList>
-          {post.tags.map((tag) => {
-            return (
-              <Tag as="li" key={tag}>
-                {tag}
-              </Tag>
-            );
-          })}
-        </TagsList>
-      </TagsContainer>
+      {tags && <UnorderedList title="tags" data={tags} />}
+
+      {plugins && <UnorderedList title="plugins" data={plugins} />}
+
+      {genres && <UnorderedList title="genres" data={genres} />}
 
       <FlexContainer>
         <StyledP mode="primary">
@@ -155,7 +109,7 @@ export function PostCard({ post, authors }) {
         </StyledP>
 
         <AuthCheck fallback={<DisabledLikeButton />}>
-          <LikeButton postID={post.id} />
+          <LikeButton postID={id} />
         </AuthCheck>
       </FlexContainer>
     </Card>
