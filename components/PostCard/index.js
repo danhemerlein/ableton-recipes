@@ -1,23 +1,21 @@
-import { remHelper } from 'lib/utilities/remHelper';
-import Link from 'next/link';
-import styled from 'styled-components';
-import { FlexContainer } from 'styles/elements/containers';
+import AuthCheck from '@components/AuthCheck';
+import DisabledLikeButton from '@components/DisabledLikeButton';
 import LikeButton from '@components/LikeButton';
-import { H2, P } from 'styles/elements/typography';
-import { anchorColor } from 'styles/utilities';
-import { useEffect, useState } from 'react';
 import { doc, onSnapshot } from '@firebase/firestore';
 import { firestore } from 'lib/firebase';
-import { above } from 'styles/utilities';
+import { remHelper } from 'lib/utilities/remHelper';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { FlexContainer } from 'styles/elements/containers';
+import { H2, P } from 'styles/elements/typography';
+import { above, anchorColor } from 'styles/utilities';
 import {
+  buildDate,
   getDesktopMarginLeft,
   getDestkopMarginRight,
   getTabletMarginLeft,
   getTabletMarginRight,
-  buildDate,
 } from './lib';
-import AuthCheck from '@components/AuthCheck';
-import DisabledLikeButton from '@components/DisabledLikeButton';
 
 const Card = styled.li`
   width: 100%;
@@ -93,7 +91,7 @@ const Title = styled(H2)`
   }
 `;
 
-export function PostCard({ post, admin, authors }) {
+export function PostCard({ post, authors }) {
   const [createdAt, setCreatedAt] = useState({});
 
   const author = authors.filter((a) => a.id === post.author);
@@ -120,8 +118,6 @@ export function PostCard({ post, admin, authors }) {
 
   return (
     <Card>
-      {admin && <>{post.published ? <P>Live</P> : <P>Unpublished</P>}</>}
-
       <Title mode="primary">
         <a href={post.link} target="_blank">
           {post.title}
@@ -162,12 +158,6 @@ export function PostCard({ post, admin, authors }) {
           <LikeButton postID={post.id} />
         </AuthCheck>
       </FlexContainer>
-
-      {admin && (
-        <StyledP mode="primary">
-          <Link href={`/admin/${post.slug}`}>Edit</Link>
-        </StyledP>
-      )}
     </Card>
   );
 }

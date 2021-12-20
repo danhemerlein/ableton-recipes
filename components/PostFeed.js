@@ -1,8 +1,8 @@
-import { PostCard } from './PostCard';
-import styled from 'styled-components';
-import { useEffect, useState } from 'react';
-import { remHelper } from 'lib/utilities/remHelper';
 import { getAllDocumentsInACollection } from 'lib/firebase';
+import { remHelper } from 'lib/utilities/remHelper';
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { PostCard } from './PostCard';
 
 const Feed = styled.ul`
   display: flex;
@@ -11,7 +11,7 @@ const Feed = styled.ul`
   width: 100%;
 `;
 
-const PostFeed = ({ posts, admin }) => {
+const PostFeed = ({ posts }) => {
   const [authors, setAuthors] = useState([]);
 
   useEffect(async () => {
@@ -26,9 +26,7 @@ const PostFeed = ({ posts, admin }) => {
   return (
     <Feed>
       {posts.map((post) => {
-        return (
-          <PostCard authors={authors} post={post} key={post.id} admin={admin} />
-        );
+        return <PostCard authors={authors} post={post} key={post.id} />;
       })}
     </Feed>
   );
