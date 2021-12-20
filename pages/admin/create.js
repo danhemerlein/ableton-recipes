@@ -1,8 +1,7 @@
+import AdminCheck from 'components/AdminCheck';
+import Metatags from 'components/Metatags';
+import { getAllDocumentsInACollection } from 'lib/firebase';
 import { useEffect, useState } from 'react';
-import AdminCheck from '../../components/AdminCheck';
-import Metatags from '../../components/Metatags';
-
-import { getAllDocumentsInACollection } from '../../lib/firebase';
 import CreatePostForm from './CreatePostForm';
 
 function CreateNewPost() {

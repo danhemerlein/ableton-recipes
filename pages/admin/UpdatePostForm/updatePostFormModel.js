@@ -3,14 +3,40 @@ const model = {
   formField: {
     title: {
       name: 'title',
-      label: 'enter post title',
-      errorMessage: 'post title is required',
+      label: 'enter title',
+      errorMessage: 'title is required',
     },
 
-    content: {
-      name: 'content',
-      label: 'write your review',
-      errorMessage: 'post content is required',
+    link: {
+      name: 'link',
+      label: 'enter link',
+      errorMessage: 'link is required',
+    },
+
+    author: {
+      name: 'author',
+      label: 'enter author',
+      errorMessage: 'author is required',
+    },
+
+    tags: {
+      name: 'tags',
+      label: 'tags',
+    },
+
+    genres: {
+      name: 'genres',
+      label: 'genres',
+    },
+
+    plugins: {
+      name: 'plugins',
+      label: 'plugins',
+    },
+
+    published: {
+      name: 'published',
+      label: 'publish now?',
     },
   },
 };

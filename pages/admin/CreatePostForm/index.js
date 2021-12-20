@@ -1,33 +1,32 @@
+import Button from '@components/Button';
+import CheckboxList from '@components/CheckboxList';
+import TextField from '@components/TextField';
 import {
   addDoc,
   collection,
+  collectionGroup,
   doc,
   getDocs,
-  updateDoc,
-  serverTimestamp,
   query,
-  collectionGroup,
+  serverTimestamp,
+  updateDoc,
   where,
 } from '@firebase/firestore';
-import { errorToastStyles } from 'styles/utilities';
-import Button from '@components/Button';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import { UserContext } from 'lib/context';
-import { auth, firestore, docToJSON } from 'lib/firebase';
+import { auth, docToJSON, firestore } from 'lib/firebase';
 import { remHelper } from 'lib/utilities/remHelper';
 import _ from 'lodash';
-import { successToastStyles } from 'styles/utilities';
-import TextField from '@components/TextField';
 import { useRouter } from 'next/dist/client/router';
 import { useCallback, useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import styled from 'styled-components';
 import { CenterContainer, FlexContainer } from 'styles/elements/containers';
 import { H1, P } from 'styles/elements/typography';
+import { errorToastStyles, successToastStyles } from 'styles/utilities';
 import { formId } from './createPostFormModel';
 import defaultValues from './defaultValues';
 import schema from './validationSchema';
-import CheckboxList from '@components/CheckboxList';
 
 const FormFieldContainer = styled(FlexContainer)`
   margin: ${remHelper[16]} 0;
@@ -176,7 +175,6 @@ const CreatePostForm = ({ tags, authors, plugins, genres }) => {
           };
 
           const setLinkValue = (linkString) => {
-            console.log('running set link value');
             setFieldTouched('link', true, false);
             checkLink(linkString);
 
