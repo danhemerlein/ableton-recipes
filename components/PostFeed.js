@@ -17,14 +17,6 @@ const Feed = styled.ul`
 `;
 
 const PostFeed = ({ posts, authors }) => {
-  // const [authors, setAuthors] = useState([]);
-
-  // useEffect(async () => {
-  //   const statefulAuthors = await getAllDocumentsInACollection('authors');
-
-  //   setAuthors(statefulAuthors);
-  // }, []);
-
   if (!posts || !authors) {
     return null;
   }
