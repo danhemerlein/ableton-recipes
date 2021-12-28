@@ -1,6 +1,4 @@
-import { getAllDocumentsInACollection } from 'lib/firebase';
 import { remHelper } from 'lib/utilities/remHelper';
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { above } from 'styles/utilities';
 import { PostCard } from './PostCard';
@@ -18,16 +16,16 @@ const Feed = styled.ul`
   width: 100%;
 `;
 
-const PostFeed = ({ posts }) => {
-  const [authors, setAuthors] = useState([]);
+const PostFeed = ({ posts, authors }) => {
+  // const [authors, setAuthors] = useState([]);
 
-  useEffect(async () => {
-    const statefulAuthors = await getAllDocumentsInACollection('authors');
+  // useEffect(async () => {
+  //   const statefulAuthors = await getAllDocumentsInACollection('authors');
 
-    setAuthors(statefulAuthors);
-  }, []);
+  //   setAuthors(statefulAuthors);
+  // }, []);
 
-  if (!posts || !authors.length) {
+  if (!posts || !authors) {
     return null;
   }
 

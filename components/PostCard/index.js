@@ -50,11 +50,11 @@ const Title = styled(H2)`
 `;
 
 export function PostCard({ post, authors }) {
-  const [UICreatedAt, setUICreatedAt] = useState({});
-  const [UIHeartCount, setUIHeartCount] = useState(heartCount);
-
   const { heartCount, createdAt, link, title, id, tags, genres, plugins } =
     post;
+
+  const [UICreatedAt, setUICreatedAt] = useState({});
+  const [UIHeartCount, setUIHeartCount] = useState(heartCount);
 
   const author = authors.filter((a) => a.id === post.author);
 

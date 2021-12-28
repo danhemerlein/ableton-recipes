@@ -1,29 +1,14 @@
 import CheckboxList from '@components/CheckboxList';
 import Button from 'components/Button';
 import { Form, Formik } from 'formik';
-import { getAllDocumentsInACollection } from 'lib/firebase';
 import { remHelper } from 'lib/utilities/remHelper';
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const StyledButton = styled(Button)`
   margin-top: ${remHelper[8]};
 `;
 
-export default function Filter({ submitHandler }) {
-  const [tags, setTags] = useState([]);
-  const [genres, setGenres] = useState([]);
-  const [plugins, setPlugins] = useState([]);
-
-  useEffect(async () => {
-    const statefulTags = await getAllDocumentsInACollection('tags');
-    const statefulGenres = await getAllDocumentsInACollection('genres');
-    const statefulPlugins = await getAllDocumentsInACollection('plugins');
-    setTags(statefulTags);
-    setGenres(statefulGenres);
-    setPlugins(statefulPlugins);
-  }, []);
-
+export default function Filter({ submitHandler, tags, genres, plugins }) {
   return (
     <>
       <Formik

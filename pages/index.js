@@ -1,4 +1,4 @@
-import TagsFilter from '@components/FilterSort/';
+import FilterSort from '@components/FilterSort/';
 import {
   collection,
   getDocs,
@@ -13,7 +13,12 @@ import Button from 'components/Button';
 import Loader from 'components/Loader';
 import Metatags from 'components/Metatags';
 import PostFeed from 'components/PostFeed';
-import { docToJSON, filterPosts, firestore } from 'lib/firebase';
+import {
+  docToJSON,
+  filterPosts,
+  firestore,
+  getAllDocumentsInACollection,
+} from 'lib/firebase';
 import { remHelper } from 'lib/utilities/remHelper';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -39,8 +44,13 @@ export async function getServerSideProps() {
 
   posts = querySnapshot.docs.map(docToJSON);
 
+  const tags = await getAllDocumentsInACollection('tags');
+  const genres = await getAllDocumentsInACollection('genres');
+  const plugins = await getAllDocumentsInACollection('plugins');
+  const authors = await getAllDocumentsInACollection('authors');
+
   return {
-    props: { posts },
+    props: { posts, tags, genres, plugins, authors },
   };
 }
 
@@ -88,9 +98,16 @@ export default function Home(props) {
     <main>
       <Metatags title="fireship next" />
 
-      <TagsFilter submitHandler={handleSubmit} />
+      {props.tags && props.plugins && props.genres && (
+        <FilterSort
+          submitHandler={handleSubmit}
+          tags={props.tags}
+          plugins={props.plugins}
+          genres={props.genres}
+        />
+      )}
 
-      <PostFeed posts={posts} />
+      {props.authors && <PostFeed posts={posts} authors={props.authors} />}
 
       {!loading && !postsEnd && (
         <StyledButton
