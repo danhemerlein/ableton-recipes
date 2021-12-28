@@ -123,6 +123,8 @@ const CreatePostForm = ({ tags, authors, plugins, genres }) => {
       published: formValues.published,
       author: formValues.author,
       tags: formValues.tags,
+      genres: formValues.genres,
+      plugins: formValues.plugins,
       slug,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -159,14 +161,7 @@ const CreatePostForm = ({ tags, authors, plugins, genres }) => {
           router.push(`/admin/${slug}`);
         }}
       >
-        {({
-          values,
-          errors,
-          touched,
-          isSubmitting,
-          setFieldTouched,
-          setFieldValue,
-        }) => {
+        {({ values, setFieldTouched, setFieldValue }) => {
           const setTitleValue = (titleString) => {
             setFieldTouched('title', true, false);
             checkSlug(titleString);

@@ -1,3 +1,4 @@
+import TagsFilter from '@components/FilterSort/';
 import {
   collection,
   getDocs,
@@ -12,7 +13,6 @@ import Button from 'components/Button';
 import Loader from 'components/Loader';
 import Metatags from 'components/Metatags';
 import PostFeed from 'components/PostFeed';
-import TagsFilter from 'components/TagsFilter';
 import { docToJSON, firestore, getPostsByTags } from 'lib/firebase';
 import { remHelper } from 'lib/utilities/remHelper';
 import { useState } from 'react';
