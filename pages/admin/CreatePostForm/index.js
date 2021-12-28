@@ -125,6 +125,11 @@ const CreatePostForm = ({ tags, authors, plugins, genres }) => {
       tags: formValues.tags,
       genres: formValues.genres,
       plugins: formValues.plugins,
+      tagsGenresPlugins: [
+        ...formValues.tags,
+        ...formValues.genres,
+        ...formValues.plugins,
+      ],
       slug,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -241,8 +246,8 @@ const CreatePostForm = ({ tags, authors, plugins, genres }) => {
               </Field>
 
               <CheckboxList fieldValues={tags} fieldName="tags" />
-              <CheckboxList fieldValues={genres} fieldName="genres" />
               <CheckboxList fieldValues={plugins} fieldName="plugins" />
+              <CheckboxList fieldValues={genres} fieldName="genres" />
 
               <FormFieldContainer items="center" items="center">
                 <P as="label" htmlFor="published">

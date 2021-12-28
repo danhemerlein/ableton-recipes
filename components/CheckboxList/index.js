@@ -1,8 +1,8 @@
-import { FlexContainer } from 'styles/elements/containers';
+import { Field } from 'formik';
 import { remHelper } from 'lib/utilities/remHelper';
 import styled from 'styled-components';
-import { P, Legend } from 'styles/elements/typography';
-import { Field } from 'formik';
+import { FlexContainer } from 'styles/elements/containers';
+import { Legend, P } from 'styles/elements/typography';
 
 const StyledFieldset = styled.fieldset`
   margin-top: ${remHelper[8]};
@@ -33,10 +33,10 @@ const StyledCheckbox = styled(Field)`
   width: ${remHelper[16]};
 `;
 
-const CheckboxList = ({ fieldValues, fieldName }) => {
+const CheckboxList = ({ fieldValues, fieldName, legend }) => {
   return (
     <StyledFieldset>
-      <Legend>{fieldName}</Legend>
+      <Legend>{legend ? legend : fieldName}</Legend>
       <FlexContainer items="center">
         <List>
           {fieldValues.map((value) => {

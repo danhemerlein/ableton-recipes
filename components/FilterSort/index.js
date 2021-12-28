@@ -10,31 +10,49 @@ const StyledButton = styled(Button)`
   margin-top: ${remHelper[8]};
 `;
 
-export default function TagsFilter({ submitHandler }) {
+export default function Filter({ submitHandler }) {
   const [tags, setTags] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [plugins, setPlugins] = useState([]);
 
   useEffect(async () => {
     const statefulTags = await getAllDocumentsInACollection('tags');
     const statefulGenres = await getAllDocumentsInACollection('genres');
+    const statefulPlugins = await getAllDocumentsInACollection('plugins');
     setTags(statefulTags);
     setGenres(statefulGenres);
+    setPlugins(statefulPlugins);
   }, []);
 
   return (
     <>
       <Formik
-        initialValues={{ tags: [], genres: [] }}
+        initialValues={{ filters: [] }}
         onSubmit={(values, { setSubmitting }) => {
-          submitHandler(values.tags);
+          submitHandler(values.filters);
           setSubmitting(false);
         }}
       >
         {() => {
           return (
             <Form id="tags-filter">
-              <CheckboxList fieldValues={tags} fieldName="tags" />
-              <CheckboxList fieldValues={genres} fieldName="genres" />
+              <CheckboxList
+                fieldValues={tags}
+                fieldName="filters"
+                legend="tags"
+              />
+
+              <CheckboxList
+                fieldValues={plugins}
+                fieldName="filters"
+                legend="plugins"
+              />
+
+              <CheckboxList
+                fieldValues={genres}
+                fieldName="filters"
+                legend="genres"
+              />
 
               <StyledButton
                 mode="secondary"

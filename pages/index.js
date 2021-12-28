@@ -13,7 +13,7 @@ import Button from 'components/Button';
 import Loader from 'components/Loader';
 import Metatags from 'components/Metatags';
 import PostFeed from 'components/PostFeed';
-import { docToJSON, firestore, getPostsByTags } from 'lib/firebase';
+import { docToJSON, filterPosts, firestore } from 'lib/firebase';
 import { remHelper } from 'lib/utilities/remHelper';
 import { useState } from 'react';
 import styled from 'styled-components';
@@ -80,15 +80,15 @@ export default function Home(props) {
     }
   };
 
-  const filterPostsByTag = async (tags) => {
-    setPosts(await getPostsByTags(tags));
+  const handleSubmit = async (filters) => {
+    setPosts(await filterPosts(filters));
   };
 
   return (
     <main>
       <Metatags title="fireship next" />
 
-      <TagsFilter submitHandler={filterPostsByTag} />
+      <TagsFilter submitHandler={handleSubmit} />
 
       <PostFeed posts={posts} />
 
