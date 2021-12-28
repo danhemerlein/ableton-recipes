@@ -1,25 +1,25 @@
 import {
-  collectionGroup,
+  collection,
   getDocs,
   limit,
   orderBy,
-  collection,
   query,
   startAfter,
   Timestamp,
   where,
 } from '@firebase/firestore';
-import { useState } from 'react';
+import Button from 'components/Button';
 import Loader from 'components/Loader';
 import Metatags from 'components/Metatags';
 import PostFeed from 'components/PostFeed';
 import TagsFilter from 'components/TagsFilter';
 import { docToJSON, firestore, getPostsByTags } from 'lib/firebase';
-import Button from 'components/Button';
-import styled from 'styled-components';
 import { remHelper } from 'lib/utilities/remHelper';
+import { useState } from 'react';
+import styled from 'styled-components';
+import { P } from 'styles/elements/typography';
 
-const LIMIT = 10;
+const LIMIT = 2;
 
 const StyledButton = styled(Button)`
   margin-top: ${remHelper[8]};
@@ -50,7 +50,9 @@ export default function Home(props) {
   const [postsEnd, setPostsEnd] = useState(false);
 
   const getMorePosts = async () => {
+    console.log('running get more posts');
     setLoading(true);
+
     const last = posts[posts.length - 1];
 
     const cursor =
@@ -58,15 +60,17 @@ export default function Home(props) {
         ? Timestamp.fromMillis(last.createdAt)
         : last.createdAt;
 
-    const collectionGroupQuery = query(
-      collectionGroup(firestore, 'posts'),
+    const collectionQuery = query(
+      collection(firestore, 'posts'),
       where('published', '==', true),
       orderBy('createdAt', 'desc'),
       startAfter(cursor),
       limit(LIMIT)
     );
 
-    const newPosts = (await query.get()).docs.map((doc) => doc.data());
+    const querySnapshot = await getDocs(collectionQuery);
+
+    const newPosts = querySnapshot.docs.map(docToJSON);
 
     setPosts(posts.concat(newPosts));
     setLoading(false);
@@ -91,14 +95,14 @@ export default function Home(props) {
       {!loading && !postsEnd && (
         <StyledButton
           CTA="load more posts"
-          onClick={getMorePosts}
+          clickHandler={getMorePosts}
           mode="primary"
         ></StyledButton>
       )}
 
       <Loader show={loading} />
 
-      {postsEnd && 'you have seen it all'}
+      {postsEnd && <P textAlign="center">there no more posts to show</P>}
     </main>
   );
 }
