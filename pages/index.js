@@ -1,4 +1,3 @@
-import FilterSort from '@components/FilterSort/';
 import {
   collection,
   getDocs,
@@ -10,40 +9,29 @@ import {
   where,
 } from '@firebase/firestore';
 import Button from 'components/Button';
+import FilterSort from 'components/FilterSort/';
 import Loader from 'components/Loader';
 import Metatags from 'components/Metatags';
 import PostFeed from 'components/PostFeed';
+import { DEFAULT_POST_LIMIT } from 'lib/constants/variables';
 import {
   docToJSON,
   filterPosts,
   firestore,
   getAllDocumentsInACollection,
+  getDefaultPostsList,
 } from 'lib/firebase';
 import { remHelper } from 'lib/utilities/remHelper';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { P } from 'styles/elements/typography';
 
-const LIMIT = 2;
-
 const StyledButton = styled(Button)`
   margin-top: ${remHelper[8]};
 `;
 
 export async function getServerSideProps() {
-  let posts;
-  // gets all sub collecitions since posts are attached to users
-  const collectionQuery = query(
-    collection(firestore, 'posts'),
-    where('published', '==', true),
-    orderBy('createdAt', 'desc'),
-    limit(LIMIT)
-  );
-
-  const querySnapshot = await getDocs(collectionQuery);
-
-  posts = querySnapshot.docs.map(docToJSON);
-
+  const posts = await getDefaultPostsList();
   const tags = await getAllDocumentsInACollection('tags');
   const genres = await getAllDocumentsInACollection('genres');
   const plugins = await getAllDocumentsInACollection('plugins');
@@ -75,7 +63,7 @@ export default function Home(props) {
       where('published', '==', true),
       orderBy('createdAt', 'desc'),
       startAfter(cursor),
-      limit(LIMIT)
+      limit(DEFAULT_POST_LIMIT)
     );
 
     const querySnapshot = await getDocs(collectionQuery);
@@ -85,7 +73,7 @@ export default function Home(props) {
     setPosts(posts.concat(newPosts));
     setLoading(false);
 
-    if (newPosts.length < LIMIT) {
+    if (newPosts.length < DEFAULT_POST_LIMIT) {
       setPostsEnd(true);
     }
   };
@@ -101,6 +89,7 @@ export default function Home(props) {
       {props.tags && props.plugins && props.genres && (
         <FilterSort
           submitHandler={handleSubmit}
+          setPosts={setPosts}
           tags={props.tags}
           plugins={props.plugins}
           genres={props.genres}

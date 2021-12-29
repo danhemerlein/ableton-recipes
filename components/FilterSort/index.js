@@ -1,14 +1,25 @@
 import CheckboxList from '@components/CheckboxList';
 import Button from 'components/Button';
 import { Form, Formik } from 'formik';
+import { getDefaultPostsList } from 'lib/firebase';
 import { remHelper } from 'lib/utilities/remHelper';
 import styled from 'styled-components';
 
-const StyledButton = styled(Button)`
+const SubmitButton = styled(Button)`
   margin-top: ${remHelper[8]};
 `;
 
-export default function Filter({ submitHandler, tags, genres, plugins }) {
+const ClearButton = styled(Button)`
+  margin-left: ${remHelper[8]};
+`;
+
+export default function Filter({
+  submitHandler,
+  tags,
+  genres,
+  plugins,
+  setPosts,
+}) {
   return (
     <>
       <Formik
@@ -18,7 +29,11 @@ export default function Filter({ submitHandler, tags, genres, plugins }) {
           setSubmitting(false);
         }}
       >
-        {() => {
+        {({ values, resetForm }) => {
+          const handleClear = async () => {
+            resetForm({ filters: [] });
+            setPosts(await getDefaultPostsList());
+          };
           return (
             <Form id="tags-filter">
               <CheckboxList
@@ -39,11 +54,19 @@ export default function Filter({ submitHandler, tags, genres, plugins }) {
                 legend="genres"
               />
 
-              <StyledButton
+              <SubmitButton
                 mode="secondary"
-                CTA="apply"
+                CTA="apply filters"
                 type="submit"
-              ></StyledButton>
+              ></SubmitButton>
+
+              {values.filters.length ? (
+                <ClearButton
+                  mode="primary"
+                  CTA="clear filters"
+                  clickHandler={handleClear}
+                ></ClearButton>
+              ) : null}
             </Form>
           );
         }}
