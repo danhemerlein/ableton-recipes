@@ -1,9 +1,8 @@
-import UserSettingsForm from 'components/UserSettingsForm';
-import { P, H2 } from 'styles/elements/typography';
-import { useState } from 'react';
-import PostFeed from './PostFeed';
-import { FlexContainer } from 'styles/elements/containers';
 import { SignOutButton } from '@pages/enter/SignOutButton';
+import { useState } from 'react';
+import { FlexContainer } from 'styles/elements/containers';
+import { H2 } from 'styles/elements/typography';
+import PostFeed from '../../components/PostFeed';
 
 const UserProfile = ({ user, likedPosts }) => {
   const [showUpdateForm, setShowUpdateForm] = useState(false);

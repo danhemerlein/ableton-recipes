@@ -1,6 +1,6 @@
 import { serverTimestamp, updateDoc } from '@firebase/firestore';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import { getUserWithUsername } from '../../lib/firebase';
+import { getUserWithUsername } from '../../../lib/firebase';
 import { formId } from './updateUserSettingsFormModel';
 import schema from './validationSchema';
 

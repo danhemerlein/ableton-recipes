@@ -1,7 +1,7 @@
-import { getDoc } from 'firebase/firestore';
-import Metatags from 'components/Metatags';
-import UserProfile from 'components/UserProfile';
 import AuthCheck from '@components/AuthCheck';
+import UserProfile from '@pages/[username]/UserProfile';
+import Metatags from 'components/Metatags';
+import { getDoc } from 'firebase/firestore';
 import { getLikedPostsByUser, getUserWithUsername } from 'lib/firebase';
 
 export async function getServerSideProps({ query }) {
