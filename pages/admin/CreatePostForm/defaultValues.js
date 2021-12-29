@@ -11,7 +11,7 @@ const values = {
   [tags.name]: [],
   [genres.name]: [],
   [plugins.name]: [],
-  [published.name]: false,
+  [published.name]: true,
 };
 
 export default values;

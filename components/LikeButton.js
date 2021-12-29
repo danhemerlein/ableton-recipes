@@ -1,23 +1,22 @@
 import {
-  doc,
-  deleteDoc,
-  updateDoc,
   collection,
-  onSnapshot,
+  deleteDoc,
+  doc,
   getDocs,
-  query,
-  where,
-  setDoc,
   increment,
+  onSnapshot,
+  query,
+  setDoc,
+  updateDoc,
+  where,
 } from '@firebase/firestore';
-
-import { firestore, docToJSON } from 'lib/firebase';
-import { useContext } from 'react';
-import { UserContext } from 'lib/context';
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { remHelper } from 'lib/utilities/remHelper';
 import Button from 'components/Button';
+import { UserContext } from 'lib/context';
+import { docToJSON } from 'lib/firebase';
+import { firestore } from 'lib/firestore';
+import { remHelper } from 'lib/utilities/remHelper';
+import { useContext, useEffect, useState } from 'react';
+import styled from 'styled-components';
 import { rainy_hearts } from 'styles/utilities';
 
 const StyledButton = styled(Button)`

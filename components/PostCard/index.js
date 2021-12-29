@@ -2,7 +2,7 @@ import AuthCheck from '@components/AuthCheck';
 import DisabledLikeButton from '@components/DisabledLikeButton';
 import LikeButton from '@components/LikeButton';
 import { doc, onSnapshot } from '@firebase/firestore';
-import { firestore } from 'lib/firebase';
+import { firestore } from 'lib/firestore';
 import { remHelper } from 'lib/utilities/remHelper';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';

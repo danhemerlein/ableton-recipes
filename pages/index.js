@@ -16,7 +16,7 @@ import PostFeed from 'components/PostFeed';
 import { DEFAULT_POST_LIMIT } from 'lib/constants/variables';
 import {
   docToJSON,
-  filterPosts,
+  filterSortPosts,
   firestore,
   getAllDocumentsInACollection,
   getDefaultPostsList,
@@ -78,8 +78,8 @@ export default function Home(props) {
     }
   };
 
-  const handleSubmit = async (filters) => {
-    setPosts(await filterPosts(filters));
+  const handleSubmit = async (filters, direction) => {
+    setPosts(await filterSortPosts(filters, direction));
   };
 
   return (
