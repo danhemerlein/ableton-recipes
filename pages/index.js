@@ -78,13 +78,13 @@ export default function Home(props) {
     }
   };
 
-  const handleSubmit = async (filters, direction) => {
-    setPosts(await filterSortPosts(filters, direction));
+  const handleSubmit = async (filters, direction, heartCount) => {
+    setPosts(await filterSortPosts(filters, direction, heartCount));
   };
 
   return (
     <main>
-      <Metatags title="fireship next" />
+      <Metatags title="ableton recipes" />
 
       {props.tags && props.plugins && props.genres && (
         <FilterSort

@@ -14,7 +14,7 @@ const ClearButton = styled(Button)`
   margin-left: ${remHelper[8]};
 `;
 
-const defaultValues = { filters: [], direction: 'desc' };
+const defaultValues = { filters: [], direction: 'desc', heartCount: false };
 
 export default function Filter({
   submitHandler,
@@ -28,7 +28,7 @@ export default function Filter({
       <Formik
         initialValues={defaultValues}
         onSubmit={(values, { setSubmitting }) => {
-          submitHandler(values.filters, values.direction);
+          submitHandler(values.filters, values.direction, values.heartCount);
           setSubmitting(false);
         }}
       >
@@ -37,6 +37,9 @@ export default function Filter({
             resetForm(defaultValues);
             setPosts(await getDefaultPostsList());
           };
+
+          let showClear = values.filters.length || values.heartCount;
+
           return (
             <Form id="tags-filter">
               <P>filters</P>
@@ -60,17 +63,35 @@ export default function Filter({
 
               <P>sort</P>
 
-              <P as="label" htmlFor="desc">
+              <P as="label" htmlFor="direction-desc">
                 newest first
               </P>
 
-              <Field type="radio" name="direction" id="desc" value="desc" />
+              <Field
+                type="radio"
+                name="direction"
+                id="direction-desc"
+                value="desc"
+              />
 
-              <P as="label" htmlFor="asc">
+              <P as="label" htmlFor="direction-asc">
                 oldest first
               </P>
 
-              <Field type="radio" name="direction" id="asc" value="" />
+              <Field
+                type="radio"
+                name="direction"
+                id="direction-asc"
+                value=""
+              />
+
+              <div>
+                <P as="label" htmlFor="heartCount">
+                  most liked
+                </P>
+
+                <Field type="checkbox" name="heartCount" id="heartCount" />
+              </div>
 
               <div>
                 <SubmitButton
@@ -78,15 +99,14 @@ export default function Filter({
                   CTA="apply"
                   type="submit"
                 ></SubmitButton>
+                {showClear && (
+                  <ClearButton
+                    mode="primary"
+                    CTA="clear"
+                    clickHandler={handleClear}
+                  ></ClearButton>
+                )}
               </div>
-
-              {values.filters.length ? (
-                <ClearButton
-                  mode="primary"
-                  CTA="clear"
-                  clickHandler={handleClear}
-                ></ClearButton>
-              ) : null}
             </Form>
           );
         }}

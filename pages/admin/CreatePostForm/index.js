@@ -14,7 +14,8 @@ import {
 } from '@firebase/firestore';
 import { Field, Form, Formik } from 'formik';
 import { UserContext } from 'lib/context';
-import { auth, docToJSON, firestore } from 'lib/firebase';
+import { docToJSON } from 'lib/firebase';
+import { auth, firestore } from 'lib/firestore';
 import { remHelper } from 'lib/utilities/remHelper';
 import _ from 'lodash';
 import { useRouter } from 'next/dist/client/router';
